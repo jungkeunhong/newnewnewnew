@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Upload, Loader2, ChevronRight, Share2, MapPin, Star, Download, Instagram, MessageSquare, Video, Link } from 'lucide-react';
+import { Camera, Upload, Loader2, ChevronRight, Share2, MapPin, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DetailedAnalysis from './DetailedAnalysis';
 import DoctorProfile from './DoctorProfile';
@@ -11,7 +11,6 @@ const SkinAnalysisApp = () => {
   const [showMessage, setShowMessage] = useState(true);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showShareModal, setShowShareModal] = useState(false);
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
   
@@ -284,14 +283,14 @@ const SkinAnalysisApp = () => {
 
         <motion.button 
           onClick={() => setStep('detailed')}
-          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
+          className="w-full bg-white p-4 rounded-xl shadow-sm flex items-center justify-between"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           variants={fadeIn}
           transition={{ delay: 0.8 }}
         >
           <span className="font-medium">View Detailed Analysis</span>
-          <ChevronRight className="w-5 h-5 text-white" />
+          <ChevronRight className="w-5 h-5 text-purple-400" />
         </motion.button>
 
         <motion.div 
@@ -307,14 +306,18 @@ const SkinAnalysisApp = () => {
                 brand: "Torriden",
                 rating: 4.5,
                 reviews: 2062,
-                image: "https://m.media-amazon.com/images/I/41z2cf+o0mL._SY300_SX300_.jpg"
+                image: "https://m.media-amazon.com/images/I/41z2cf+o0mL._SY300_SX300_.jpg",
+                description: "고농축 히알루론산이 함유된 수분 세럼",
+                ingredients: ["히알루론산", "나이아신아마이드", "펩타이드", "세라마이드"]
               },
               {
                 name: "Vitamin C Serum",
                 brand: "Asterwood",
                 rating: 4.4,
                 reviews: 1561,
-                image: "https://m.media-amazon.com/images/I/71irav7XAsL._SX679_.jpg"
+                image: "https://m.media-amazon.com/images/I/71irav7XAsL._SX679_.jpg",
+                description: "피부 재생을 돕는 레티놀 크림",
+                ingredients: ["레티놀", "펩타이드", "세라마이드", "판테놀"]
               }
             ].map((product, i) => (
               <motion.button
@@ -330,6 +333,9 @@ const SkinAnalysisApp = () => {
                   setStep('product');
                 }}
               >
+                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mr-3">
+                  <span className="text-xl">{product.icon}</span>
+                </div>
                 <img src={product.image} alt={product.name} className="w-16 h-16 rounded-lg object-cover" />
                 <div className="flex-1 px-3 text-left">
                   <div className="font-medium">{product.name}</div>
@@ -384,6 +390,9 @@ const SkinAnalysisApp = () => {
                   setStep('doctor');
                 }}
               >
+                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mr-3">
+                  <span className="text-xl">{clinic.icon}</span>
+                </div>
                 <img src={clinic.image} alt={clinic.name} className="w-16 h-16 rounded-full object-cover" />
                 <div className="flex-1 px-3 text-left">
                   <div className="font-medium">{clinic.name}</div>
@@ -406,94 +415,17 @@ const SkinAnalysisApp = () => {
           </div>
         </motion.div>
 
-        <div className="flex gap-3 mb-6">
-          <motion.button 
-            onClick={() => {/* Save functionality */}}
-            className="flex-1 bg-white text-purple-600 border border-purple-200 p-4 rounded-xl flex items-center justify-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            variants={fadeIn}
-            transition={{ delay: 1.3 }}
-          >
-            <Download className="w-5 h-5" />
-            <span>Save Report</span>
-          </motion.button>
-
-          <motion.button 
-            onClick={() => setShowShareModal(true)}
-            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            variants={fadeIn}
-            transition={{ delay: 1.3 }}
-          >
-            <Share2 className="w-5 h-5" />
-            <span>Share Results</span>
-          </motion.button>
-        </div>
-
-        {showShareModal && (
-          <motion.div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white rounded-2xl p-6 w-full max-w-sm"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-            >
-              <h3 className="text-lg font-semibold mb-4">Share Results</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <motion.button
-                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Instagram className="w-5 h-5" />
-                  <span>Instagram</span>
-                </motion.button>
-                <motion.button
-                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  <span>iMessage</span>
-                </motion.button>
-                <motion.button
-                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Video className="w-5 h-5" />
-                  <span>TikTok</span>
-                </motion.button>
-                <motion.button
-                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    // Add toast notification here
-                  }}
-                >
-                  <Link className="w-5 h-5" />
-                  <span>Copy Link</span>
-                </motion.button>
-              </div>
-              <motion.button
-                className="w-full mt-4 p-3 text-gray-600 rounded-xl"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowShareModal(false)}
-              >
-                Cancel
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        )}
+        <motion.button 
+          onClick={() => {/* Share functionality */}}
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2 mb-6"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          variants={fadeIn}
+          transition={{ delay: 1.3 }}
+        >
+          <Share2 className="w-5 h-5" />
+          <span>Share Results</span>
+        </motion.button>
       </div>
     </motion.div>
   );

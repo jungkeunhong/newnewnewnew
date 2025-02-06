@@ -101,10 +101,10 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
 
         <div className="mt-6">
           <p className="text-gray-700 leading-relaxed">
-            Your skin is healthy with balanced hydration and oil levels. However, texture and elasticity can be improved.
+            Based on our comprehensive analysis, your skin shows a biological age of 27. Your skin demonstrates good overall health with balanced hydration levels and oil production. However, there are opportunities to enhance your skin's texture and elasticity for optimal results.
           </p>
           <p className="text-purple-700 mt-3 font-medium">
-          Key Focus Areas: Maintain hydration while adding peptide-rich products and gentle exfoliants to enhance elasticity and refine texture.
+            Key Focus Areas: We recommend maintaining your current hydration levels while incorporating products that boost elasticity and refine texture. Consider adding peptide-rich formulas and gentle exfoliants to your routine.
           </p>
         </div>
       </motion.div>

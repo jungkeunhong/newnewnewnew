@@ -93,18 +93,24 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
             />
           </div>
           <div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Detailed Analysis
+            </h1>
             <div className="mt-2 text-gray-600">
               Skin Age: <span className="font-semibold">27</span>
             </div>
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 p-4 bg-purple-50 rounded-xl">
           <p className="text-gray-700 leading-relaxed">
-            Your skin is healthy with balanced hydration and oil levels. However, texture and elasticity can be improved.
+            Your skin shows good overall health with a biological age of 27. The analysis reveals strong hydration levels 
+            and balanced oil production, though there's room for improvement in texture and elasticity. Your skin barrier 
+            is functioning well, but could benefit from additional support.
           </p>
           <p className="text-purple-700 mt-3 font-medium">
-          Key Focus Areas: Maintain hydration while adding peptide-rich products and gentle exfoliants to enhance elasticity and refine texture.
+            Recommended focus: Maintain hydration levels while incorporating gentle exfoliation and peptide-rich products 
+            to enhance skin texture and elasticity. Consider adding antioxidants for preventive care.
           </p>
         </div>
       </motion.div>
@@ -130,10 +136,10 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
                   className="flex justify-between items-center"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + (i * 0.1) }}
+                  transition={{ delay: (index * 0.1) + (i * 0.05) }}
                 >
                   <span className="text-gray-600">{detail.label}</span>
-                  <span className="font-medium text-purple-900">{detail.value}</span>
+                  <span className="font-medium text-purple-600">{detail.value}</span>
                 </motion.div>
               ))}
             </div>
