@@ -44,14 +44,15 @@ const SkinAnalysisApp = () => {
       reader.onloadend = () => {
         setSelectedImage(reader.result);
         setStep('analyzing');
-        // 상태 변경 후 타이머 설정
-        const timer = setTimeout(() => {
-          setStep('results');
-        }, 3000);
-        // 컴포넌트가 언마운트되면 타이머 정리
-        return () => clearTimeout(timer);
       };
       reader.readAsDataURL(file);
+      
+      // 분석 화면으로 전환 후 결과 화면으로 이동
+      setTimeout(() => {
+        if (step === 'analyzing') {
+          setStep('results');
+        }
+      }, 3000);
     }
   };
 
@@ -62,14 +63,15 @@ const SkinAnalysisApp = () => {
       reader.onloadend = () => {
         setSelectedImage(reader.result);
         setStep('analyzing');
-        // 상태 변경 후 타이머 설정
-        const timer = setTimeout(() => {
-          setStep('results');
-        }, 3000);
-        // 컴포넌트가 언마운트되면 타이머 정리
-        return () => clearTimeout(timer);
       };
       reader.readAsDataURL(file);
+      
+      // 분석 화면으로 전환 후 결과 화면으로 이동
+      setTimeout(() => {
+        if (step === 'analyzing') {
+          setStep('results');
+        }
+      }, 3000);
     }
   };
 
