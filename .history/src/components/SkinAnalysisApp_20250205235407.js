@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Camera, Upload, Loader2, ChevronRight, Share2, MapPin, Star, Download, Instagram, MessageSquare, Video, Link } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import html2canvas from 'html2canvas';
@@ -12,11 +12,7 @@ import AuthModal from './AuthModal';
 
 const SkinAnalysisApp = () => {
   const [user, loading] = useAuthState(auth);
-  const [step, setStep] = useState(() => {
-    // Check URL parameters for initial state
-    const params = new URLSearchParams(window.location.search);
-    return params.get('step') || 'upload';
-  });
+  const [step, setStep] = useState('upload');
   const [selectedImage, setSelectedImage] = useState(null);
   const [showMessage, setShowMessage] = useState(true);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -33,18 +29,13 @@ const SkinAnalysisApp = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle authentication state changes
-  useEffect(() => {
-    if (user && !loading) {
-      const params = new URLSearchParams(window.location.search);
-      const redirectStep = params.get('step');
-      if (redirectStep === 'detailed') {
-        setStep('detailed');
-        // Clean up URL
-        window.history.replaceState({}, '', window.location.pathname);
-      }
+  // 로그인 성공 시 상세 분석으로 자동 이동
+  React.useEffect(() => {
+    if (user && showAuthModal) {
+      setShowAuthModal(false);
+      setStep('detailed');
     }
-  }, [user, loading]);
+  }, [user, showAuthModal]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files?.[0];
@@ -271,15 +262,11 @@ const SkinAnalysisApp = () => {
   };
 
   const handleDetailedAnalysisClick = () => {
-    if (loading) return;
+    if (loading) return; // 로딩 중에는 클릭 무시
     
     if (user) {
       setStep('detailed');
     } else {
-      // Add redirect parameter to URL before showing auth modal
-      const currentUrl = new URL(window.location.href);
-      currentUrl.searchParams.set('step', 'detailed');
-      window.history.replaceState({}, '', currentUrl);
       setShowAuthModal(true);
     }
   };

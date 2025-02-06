@@ -15,7 +15,6 @@ const AuthModal = ({ onClose }) => {
         const result = await getRedirectResult(auth);
         if (result) {
           console.log('Successfully signed in:', result.user.email);
-          // Keep the URL parameters intact for SkinAnalysisApp to handle
           onClose();
         }
       } catch (error) {
@@ -37,14 +36,8 @@ const AuthModal = ({ onClose }) => {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
       if (isMobile) {
-        // Preserve the current URL with parameters for the redirect
-        const currentUrl = window.location.href;
-        googleProvider.setCustomParameters({
-          login_hint: 'user@gmail.com',
-          prompt: 'select_account',
-          redirect_uri: currentUrl
-        });
         await signInWithRedirect(auth, googleProvider);
+        // Don't set loading to false here as we're redirecting
         return;
       } else {
         const result = await signInWithPopup(auth, googleProvider);
