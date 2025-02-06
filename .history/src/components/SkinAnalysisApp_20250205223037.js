@@ -67,7 +67,7 @@ const SkinAnalysisApp = () => {
 
   const AnalyzingScreen = () => (
     <motion.div 
-      className="flex flex-col items-center justify-center min-h-screen bg-white"
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 to-pink-50"
       variants={fadeIn}
       initial="initial"
       animate="animate"
@@ -101,7 +101,7 @@ const SkinAnalysisApp = () => {
 
   const UploadScreen = () => (
     <motion.div 
-      className="flex flex-col items-center justify-center min-h-screen bg-white px-4"
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-bl from-[#E6E6FA] to-pink-50 px-4"
       variants={fadeIn}
       initial="initial"
       animate="animate"
@@ -214,17 +214,11 @@ const SkinAnalysisApp = () => {
   );
 
   const handleSaveReport = async () => {
-    try {
-      const content = document.getElementById('results-content');
-      if (!content) return;
+    const element = document.getElementById('results-content');
+    if (!element) return;
 
-      const canvas = await html2canvas(content, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        scrollY: -window.scrollY
-      });
-      
+    try {
+      const canvas = await html2canvas(element);
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgProps = pdf.getImageProperties(imgData);
@@ -240,7 +234,7 @@ const SkinAnalysisApp = () => {
 
   const ResultsScreen = () => (
     <motion.div 
-      className="flex flex-col min-h-screen bg-white"
+      className="flex flex-col min-h-screen bg-gradient-to-br from-purple-50 to-pink-50"
       variants={fadeIn}
       initial="initial"
       animate="animate"
@@ -248,7 +242,7 @@ const SkinAnalysisApp = () => {
     >
       <div id="results-content" className="flex-1 overflow-auto p-4 space-y-6">
         <motion.div 
-          className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 shadow-sm border border-pink-100"
+          className="bg-white rounded-2xl p-6 shadow-lg"
           variants={fadeIn}
           transition={{ delay: 0.1 }}
         >
@@ -291,7 +285,7 @@ const SkinAnalysisApp = () => {
           {Object.entries(skinMetrics).map(([key, value], i) => (
             <motion.div
               key={i}
-              className="bg-gradient-to-br from-pink-50 to-purple-50 p-4 rounded-xl shadow-sm border border-pink-100"
+              className="bg-white p-4 rounded-xl shadow-sm"
               variants={fadeIn}
               transition={{ delay: 0.2 + (i * 0.1) }}
             >
@@ -322,7 +316,7 @@ const SkinAnalysisApp = () => {
         </motion.button>
 
         <motion.div 
-          className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-4 border border-pink-100"
+          className="bg-white rounded-xl p-4"
           variants={fadeIn}
           transition={{ delay: 0.9 }}
         >
@@ -374,7 +368,7 @@ const SkinAnalysisApp = () => {
         </motion.div>
 
         <motion.div 
-          className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-4 border border-pink-100"
+          className="bg-white rounded-xl p-4"
           variants={fadeIn}
           transition={{ delay: 1.1 }}
         >
@@ -434,32 +428,30 @@ const SkinAnalysisApp = () => {
         </motion.div>
       </div>
 
-      <div className="sticky bottom-0 bg-white p-4 border-t border-pink-100">
-        <div className="flex gap-3">
-          <motion.button 
-            onClick={handleSaveReport}
-            className="flex-1 bg-gradient-to-br from-pink-50 to-purple-50 text-purple-600 border border-pink-200 p-4 rounded-xl flex items-center justify-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            variants={fadeIn}
-            transition={{ delay: 1.3 }}
-          >
-            <Download className="w-5 h-5" />
-            <span>Save Report</span>
-          </motion.button>
+      <div className="flex gap-3 mb-6 px-4">
+        <motion.button 
+          onClick={handleSaveReport}
+          className="flex-1 bg-white text-purple-600 border border-purple-200 p-4 rounded-xl flex items-center justify-center space-x-2"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          variants={fadeIn}
+          transition={{ delay: 1.3 }}
+        >
+          <Download className="w-5 h-5" />
+          <span>Save Report</span>
+        </motion.button>
 
-          <motion.button 
-            onClick={() => setShowShareModal(true)}
-            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            variants={fadeIn}
-            transition={{ delay: 1.3 }}
-          >
-            <Share2 className="w-5 h-5" />
-            <span>Share Results</span>
-          </motion.button>
-        </div>
+        <motion.button 
+          onClick={() => setShowShareModal(true)}
+          className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          variants={fadeIn}
+          transition={{ delay: 1.3 }}
+        >
+          <Share2 className="w-5 h-5" />
+          <span>Share Results</span>
+        </motion.button>
       </div>
 
       {showShareModal && (
@@ -528,7 +520,7 @@ const SkinAnalysisApp = () => {
   );
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-white">
+    <div className="max-w-md mx-auto min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
       <AnimatePresence mode="wait">
         {step === 'upload' && <UploadScreen key="upload" />}
         {step === 'analyzing' && <AnalyzingScreen key="analyzing" />}

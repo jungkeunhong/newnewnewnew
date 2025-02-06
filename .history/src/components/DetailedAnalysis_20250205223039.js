@@ -71,7 +71,7 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-white p-4"
+      className="min-h-screen bg-gradient-to-bl from-[#E6E6FA] to-pink-50 p-4"
       initial="initial"
       animate="animate"
       exit="exit"
@@ -88,7 +88,7 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
       </motion.button>
 
       <motion.div 
-        className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 shadow-sm border border-pink-100 mb-6"
+        className="bg-white rounded-2xl p-6 shadow-lg mb-6"
         variants={fadeIn}
         transition={{ delay: 0.1 }}
       >
@@ -125,7 +125,7 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         {Object.entries(detailedMetrics).map(([key, value], index) => (
           <motion.div
             key={key}
-            className="bg-gradient-to-br from-pink-50 to-purple-50 p-6 rounded-xl shadow-sm border border-pink-100"
+            className="bg-white p-6 rounded-xl shadow-sm"
             variants={fadeIn}
             transition={{ delay: index * 0.1 }}
           >

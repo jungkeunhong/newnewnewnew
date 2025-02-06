@@ -44,7 +44,7 @@ const ProductDetail = ({ product, onBack, skinMetrics }) => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-white"
+      className="min-h-screen bg-gradient-to-bl from-[#E6E6FA] to-pink-50"
       variants={fadeIn}
       initial="initial"
       animate="animate"
@@ -61,7 +61,7 @@ const ProductDetail = ({ product, onBack, skinMetrics }) => {
           <span>Back to Results</span>
         </motion.button>
 
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 shadow-sm border border-pink-100 space-y-6">
+        <div className="bg-white rounded-2xl p-6 shadow-lg space-y-6">
           <div className="flex items-start gap-6">
             <motion.div 
               className="w-32 h-32 rounded-xl overflow-hidden"
@@ -105,12 +105,12 @@ const ProductDetail = ({ product, onBack, skinMetrics }) => {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-purple-900">Why this product is right for you?</h2>
+            <h2 className="text-lg font-semibold text-purple-900">Personalized Skin Analysis</h2>
             <div className="space-y-4">
               {personalizedBenefits.map((benefit, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-pink-100"
+                  className="bg-purple-50 rounded-xl p-4"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -141,7 +141,7 @@ const ProductDetail = ({ product, onBack, skinMetrics }) => {
               ].map((ingredient, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-pink-100"
+                  className="bg-purple-50 p-3 rounded-lg"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + (index * 0.1) }}
