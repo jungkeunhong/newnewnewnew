@@ -291,7 +291,7 @@ const SkinAnalysisApp = () => {
           {Object.entries(skinMetrics).map(([key, value], i) => (
             <motion.div
               key={i}
-              className="bg-white p-4 rounded-xl shadow-sm border border-pink-100"
+              className="bg-gradient-to-br from-pink-50 to-purple-50 p-4 rounded-xl shadow-sm border border-pink-100"
               variants={fadeIn}
               transition={{ delay: 0.2 + (i * 0.1) }}
             >
@@ -322,7 +322,7 @@ const SkinAnalysisApp = () => {
         </motion.button>
 
         <motion.div 
-          className="bg-white rounded-xl p-4 border border-pink-100"
+          className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-4 border border-pink-100"
           variants={fadeIn}
           transition={{ delay: 0.9 }}
         >
