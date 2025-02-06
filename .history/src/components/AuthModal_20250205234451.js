@@ -9,9 +9,9 @@ const AuthModal = ({ onClose }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // 리다이렉트 후 결과 처리
     const handleRedirectResult = async () => {
       try {
-        setIsLoading(true);
         const result = await getRedirectResult(auth);
         if (result) {
           console.log('Successfully signed in:', result.user.email);
@@ -20,8 +20,6 @@ const AuthModal = ({ onClose }) => {
       } catch (error) {
         console.error('Error signing in with Google:', error);
         setError(error.message);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -33,13 +31,14 @@ const AuthModal = ({ onClose }) => {
       setIsLoading(true);
       setError(null);
       
+      // 모바일 기기 확인
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
       if (isMobile) {
+        // 모바일에서는 리다이렉트 방식 사용
         await signInWithRedirect(auth, googleProvider);
-        // Don't set loading to false here as we're redirecting
-        return;
       } else {
+        // 데스크톱에서는 팝업 방식 유지
         const result = await signInWithPopup(auth, googleProvider);
         console.log('Successfully signed in:', result.user.email);
         onClose();
@@ -47,6 +46,7 @@ const AuthModal = ({ onClose }) => {
     } catch (error) {
       console.error('Error signing in with Google:', error);
       setError(error.message);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -70,7 +70,7 @@ const AuthModal = ({ onClose }) => {
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
             {error === 'auth/popup-closed-by-user' 
-              ? 'Sign in was cancelled. Please try again.' 
+              ? '로그인이 취소되었습니다. 다시 시도해 주세요.' 
               : error}
           </div>
         )}
