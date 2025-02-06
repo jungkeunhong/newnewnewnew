@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Camera, Upload, Loader2, ChevronRight, Share2, MapPin, Star, Download, Instagram, MessageSquare, Video, Link } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import DetailedAnalysis from './DetailedAnalysis';
 import DoctorProfile from './DoctorProfile';
 import ProductDetail from './ProductDetail';
@@ -213,25 +211,6 @@ const SkinAnalysisApp = () => {
     </motion.div>
   );
 
-  const handleSaveReport = async () => {
-    const element = document.getElementById('results-content');
-    if (!element) return;
-
-    try {
-      const canvas = await html2canvas(element);
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('skin-analysis-report.pdf');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    }
-  };
-
   const ResultsScreen = () => (
     <motion.div 
       className="flex flex-col min-h-screen bg-gradient-to-br from-purple-50 to-pink-50"
@@ -240,7 +219,7 @@ const SkinAnalysisApp = () => {
       animate="animate"
       exit="exit"
     >
-      <div id="results-content" className="flex-1 overflow-auto p-4 space-y-6">
+      <div className="flex-1 overflow-auto p-4 space-y-6">
         <motion.div 
           className="bg-white rounded-2xl p-6 shadow-lg"
           variants={fadeIn}
@@ -426,96 +405,96 @@ const SkinAnalysisApp = () => {
             ))}
           </div>
         </motion.div>
-      </div>
 
-      <div className="flex gap-3 mb-6 px-4">
-        <motion.button 
-          onClick={handleSaveReport}
-          className="flex-1 bg-white text-purple-600 border border-purple-200 p-4 rounded-xl flex items-center justify-center space-x-2"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          variants={fadeIn}
-          transition={{ delay: 1.3 }}
-        >
-          <Download className="w-5 h-5" />
-          <span>Save Report</span>
-        </motion.button>
-
-        <motion.button 
-          onClick={() => setShowShareModal(true)}
-          className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          variants={fadeIn}
-          transition={{ delay: 1.3 }}
-        >
-          <Share2 className="w-5 h-5" />
-          <span>Share Results</span>
-        </motion.button>
-      </div>
-
-      {showShareModal && (
-        <motion.div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.div
-            className="bg-white rounded-2xl p-6 w-full max-w-sm"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+        <div className="flex gap-3 mb-6">
+          <motion.button 
+            onClick={() => {/* Save functionality */}}
+            className="flex-1 bg-white text-purple-600 border border-purple-200 p-4 rounded-xl flex items-center justify-center space-x-2"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            variants={fadeIn}
+            transition={{ delay: 1.3 }}
           >
-            <h3 className="text-lg font-semibold mb-4">Share Results</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <motion.button
-                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Instagram className="w-5 h-5" />
-                <span>Instagram</span>
-              </motion.button>
-              <motion.button
-                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <MessageSquare className="w-5 h-5" />
-                <span>iMessage</span>
-              </motion.button>
-              <motion.button
-                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Video className="w-5 h-5" />
-                <span>TikTok</span>
-              </motion.button>
-              <motion.button
-                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  // Add toast notification here
-                }}
-              >
-                <Link className="w-5 h-5" />
-                <span>Copy Link</span>
-              </motion.button>
-            </div>
-            <motion.button
-              className="w-full mt-4 p-3 text-gray-600 rounded-xl"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setShowShareModal(false)}
+            <Download className="w-5 h-5" />
+            <span>Save Report</span>
+          </motion.button>
+
+          <motion.button 
+            onClick={() => setShowShareModal(true)}
+            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            variants={fadeIn}
+            transition={{ delay: 1.3 }}
+          >
+            <Share2 className="w-5 h-5" />
+            <span>Share Results</span>
+          </motion.button>
+        </div>
+
+        {showShareModal && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-2xl p-6 w-full max-w-sm"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
             >
-              Cancel
-            </motion.button>
+              <h3 className="text-lg font-semibold mb-4">Share Results</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <motion.button
+                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Instagram className="w-5 h-5" />
+                  <span>Instagram</span>
+                </motion.button>
+                <motion.button
+                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  <span>iMessage</span>
+                </motion.button>
+                <motion.button
+                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Video className="w-5 h-5" />
+                  <span>TikTok</span>
+                </motion.button>
+                <motion.button
+                  className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    // Add toast notification here
+                  }}
+                >
+                  <Link className="w-5 h-5" />
+                  <span>Copy Link</span>
+                </motion.button>
+              </div>
+              <motion.button
+                className="w-full mt-4 p-3 text-gray-600 rounded-xl"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowShareModal(false)}
+              >
+                Cancel
+              </motion.button>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </div>
     </motion.div>
   );
 
