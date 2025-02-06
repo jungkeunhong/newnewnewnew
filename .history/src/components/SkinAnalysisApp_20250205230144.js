@@ -11,7 +11,7 @@ import ProductDetail from './ProductDetail';
 import AuthModal from './AuthModal';
 
 const SkinAnalysisApp = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [step, setStep] = useState('upload');
   const [selectedImage, setSelectedImage] = useState(null);
   const [showMessage, setShowMessage] = useState(true);
@@ -28,14 +28,6 @@ const SkinAnalysisApp = () => {
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
-
-  // 로그인 성공 시 상세 분석으로 자동 이동
-  React.useEffect(() => {
-    if (user && showAuthModal) {
-      setShowAuthModal(false);
-      setStep('detailed');
-    }
-  }, [user, showAuthModal]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files?.[0];
@@ -252,8 +244,6 @@ const SkinAnalysisApp = () => {
   };
 
   const handleDetailedAnalysisClick = () => {
-    if (loading) return; // 로딩 중에는 클릭 무시
-    
     if (user) {
       setStep('detailed');
     } else {
