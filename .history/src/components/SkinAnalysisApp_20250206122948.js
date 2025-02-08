@@ -133,7 +133,7 @@ const SkinAnalysisApp = () => {
           transition={{ delay: 0.3 }}
         >
           <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin text-luxe-600 mx-auto mb-4" />
+            <Loader2 className="h-8 w-8 animate-spin text-purple-600 mx-auto mb-4" />
             <h2 className="text-xl font-semibold">Analyzing...</h2>
           </div>
         </motion.div>
@@ -156,7 +156,7 @@ const SkinAnalysisApp = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
         >
-          <p className="text-center text-luxe-500">Take a clear selfie in good lighting for best results! 📸</p>
+          <p className="text-center text-purple-800">Take a clear selfie in good lighting for best results! 📸</p>
         </motion.div>
       )}
       
@@ -170,7 +170,7 @@ const SkinAnalysisApp = () => {
           <h1 className="text-3xl font-bold gotu-regular">
             AI Skin Diagnosis
           </h1>
-          <p className="text-luxe-400">Unlock your personalized skin report & treatment guide</p>
+          <p className="text-gray-600">Unlock your personalized skin report & treatment guide</p>
         </motion.div>
         
         {selectedImage && (
@@ -192,7 +192,7 @@ const SkinAnalysisApp = () => {
         >
           <motion.button 
             onClick={() => fileInputRef.current?.click()}
-            className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl hover:opacity-90 transition-opacity"
+            className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl hover:opacity-90 transition-opacity"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -209,7 +209,7 @@ const SkinAnalysisApp = () => {
           
           <motion.button 
             onClick={() => cameraInputRef.current?.click()}
-            className="w-full flex items-center justify-center space-x-2 border border-luxe-200 bg-white p-4 rounded-xl hover:bg-luxe-50 transition-colors"
+            className="w-full flex items-center justify-center space-x-2 border border-purple-200 bg-white p-4 rounded-xl hover:bg-purple-50 transition-colors"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -233,22 +233,22 @@ const SkinAnalysisApp = () => {
           transition={{ delay: 0.4 }}
         >
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 flex items-center justify-center bg-luxe-100 rounded-lg">
+            <div className="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-lg">
               <span className="text-xl">✨</span>
             </div>
-            <p className="text-sm text-luxe-900">Analysis by Medical Professional</p>
+            <p className="text-sm text-purple-900">Analysis by Medical Professional</p>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 flex items-center justify-center bg-luxe-100 rounded-lg">
+            <div className="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-lg">
               <span className="text-xl">🔒</span>
             </div>
-            <p className="text-sm text-luxe-900">Private and secure</p>
+            <p className="text-sm text-purple-900">Private and secure</p>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 flex items-center justify-center bg-luxe-100 rounded-lg">
+            <div className="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-lg">
               <span className="text-xl">⚡️</span>
             </div>
-            <p className="text-sm text-luxe-900">Results in 5 seconds</p>
+            <p className="text-sm text-purple-900">Results in 5 seconds</p>
           </div>
         </motion.div>
       </div>
@@ -314,7 +314,7 @@ const SkinAnalysisApp = () => {
     >
       <div id="results-content" className="flex-1 overflow-auto p-4 space-y-6">
         <motion.div 
-          className="bg-gradient-to-br from-luxe-100 to-luxe-50 rounded-2xl p-6 shadow-sm border border-luxe-200"
+          className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 shadow-sm border border-pink-100"
           variants={fadeIn}
           transition={{ delay: 0.1 }}
         >
@@ -327,7 +327,7 @@ const SkinAnalysisApp = () => {
             </motion.div>
             <div>
               <motion.h2 
-                className="text-2xl font-bold bg-gradient-to-r from-luxe-400 to-luxe-300 bg-clip-text text-transparent"
+                className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
@@ -342,7 +342,7 @@ const SkinAnalysisApp = () => {
                 Skin Age: <span className="font-semibold">27</span>
               </motion.div>
               <motion.div 
-                className="text-sm text-luxe-600"
+                className="text-sm text-purple-600"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -357,27 +357,27 @@ const SkinAnalysisApp = () => {
           {Object.entries(skinMetrics).map(([key, value], i) => (
             <motion.div
               key={i}
-              className="bg-white p-4 rounded-xl shadow-sm border border-luxe-200"
+              className="bg-white p-4 rounded-xl shadow-sm border border-pink-100"
               variants={fadeIn}
               transition={{ delay: 0.2 + (i * 0.1) }}
             >
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-luxe-100 to-luxe-50 rounded-lg">
+                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg">
                   <span className="text-xl">{value.emoji}</span>
                 </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-luxe-400 to-luxe-300 bg-clip-text text-transparent">
+                <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   {value.score}/10
                 </div>
               </div>
               <div className="font-medium mt-2">{key.charAt(0).toUpperCase() + key.slice(1)}</div>
-              <div className="text-sm text-luxe-600">{value.description}</div>
+              <div className="text-sm text-gray-600">{value.description}</div>
             </motion.div>
           ))}
         </div>
 
         <motion.button 
           onClick={handleDetailedAnalysisClick}
-          className="w-full bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           variants={fadeIn}
@@ -388,11 +388,11 @@ const SkinAnalysisApp = () => {
         </motion.button>
 
         <motion.div 
-          className="bg-white rounded-xl p-4 border border-luxe-200"
+          className="bg-white rounded-xl p-4 border border-pink-100"
           variants={fadeIn}
           transition={{ delay: 0.9 }}
         >
-          <h2 className="font-semibold mb-3 text-luxe-900">Skincare for your acne</h2>
+          <h2 className="font-semibold mb-3 text-purple-900">Skincare for your acne</h2>
           <div className="space-y-3">
             {[
               {
@@ -412,7 +412,7 @@ const SkinAnalysisApp = () => {
             ].map((product, i) => (
               <motion.button
                 key={i}
-                className="w-full flex items-center p-3 border border-luxe-100 rounded-xl hover:bg-luxe-50 transition-colors"
+                className="w-full flex items-center p-3 border border-purple-100 rounded-xl hover:bg-purple-50 transition-colors"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, x: -20 }}
@@ -426,25 +426,25 @@ const SkinAnalysisApp = () => {
                 <img src={product.image} alt={product.name} className="w-16 h-16 rounded-lg object-cover" />
                 <div className="flex-1 px-3 text-left">
                   <div className="font-medium">{product.name}</div>
-                  <div className="text-sm text-luxe-600">{product.brand}</div>
+                  <div className="text-sm text-gray-600">{product.brand}</div>
                   <div className="flex items-center text-sm text-yellow-500 mt-1">
                     <Star className="w-4 h-4 fill-current" />
                     <span className="ml-1">{product.rating}</span>
-                    <span className="text-luxe-500 ml-1">({product.reviews})</span>
+                    <span className="text-gray-500 ml-1">({product.reviews})</span>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-luxe-400" />
+                <ChevronRight className="w-5 h-5 text-purple-400" />
               </motion.button>
             ))}
           </div>
         </motion.div>
 
         <motion.div 
-          className="bg-white rounded-xl p-4 border border-luxe-200"
+          className="bg-white rounded-xl p-4 border border-pink-100"
           variants={fadeIn}
           transition={{ delay: 1.1 }}
         >
-          <h2 className="font-semibold mb-3 text-luxe-900">Clinics for your pores</h2>
+          <h2 className="font-semibold mb-3 text-purple-900">Clinics for your pores</h2>
           <div className="space-y-3">
             {[
               {
@@ -466,7 +466,7 @@ const SkinAnalysisApp = () => {
             ].map((clinic, i) => (
               <motion.button
                 key={i}
-                className="w-full flex items-center p-3 border border-luxe-100 rounded-xl hover:bg-luxe-50 transition-colors"
+                className="w-full flex items-center p-3 border border-purple-100 rounded-xl hover:bg-purple-50 transition-colors"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, x: -20 }}
@@ -480,31 +480,31 @@ const SkinAnalysisApp = () => {
                 <img src={clinic.image} alt={clinic.name} className="w-16 h-16 rounded-full object-cover" />
                 <div className="flex-1 px-3 text-left">
                   <div className="font-medium">{clinic.name}</div>
-                  <div className="text-sm text-luxe-600">{clinic.specialty}</div>
+                  <div className="text-sm text-gray-600">{clinic.specialty}</div>
                   <div className="flex items-center justify-between mt-1">
                     <div className="flex items-center text-sm text-yellow-500">
                       <Star className="w-4 h-4 fill-current" />
                       <span className="ml-1">{clinic.rating}</span>
-                      <span className="text-luxe-500 ml-1">({clinic.reviews})</span>
+                      <span className="text-gray-500 ml-1">({clinic.reviews})</span>
                     </div>
-                    <div className="text-sm text-luxe-600 flex items-center">
+                    <div className="text-sm text-purple-600 flex items-center">
                       <span>{clinic.distance}mi</span>
                       <MapPin className="w-4 h-4 ml-1" />
                     </div>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-luxe-400" />
+                <ChevronRight className="w-5 h-5 text-purple-400" />
               </motion.button>
             ))}
           </div>
         </motion.div>
       </div>
 
-      <div className="sticky bottom-0 bg-white p-4 border-t border-luxe-200">
+      <div className="sticky bottom-0 bg-white p-4 border-t border-pink-100">
         <div className="flex gap-3">
           <motion.button 
             onClick={handleSaveReport}
-            className="flex-1 bg-gradient-to-br from-luxe-50 to-luxe-100 text-luxe-500 border border-luxe-200 p-4 rounded-xl flex items-center justify-center space-x-2"
+            className="flex-1 bg-gradient-to-br from-pink-50 to-purple-50 text-purple-600 border border-pink-200 p-4 rounded-xl flex items-center justify-center space-x-2"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             variants={fadeIn}
@@ -516,7 +516,7 @@ const SkinAnalysisApp = () => {
 
           <motion.button 
             onClick={() => setShowShareModal(true)}
-            className="flex-1 bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
+            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             variants={fadeIn}
@@ -543,7 +543,7 @@ const SkinAnalysisApp = () => {
             <h3 className="text-lg font-semibold mb-4">Share Results</h3>
             <div className="grid grid-cols-2 gap-3">
               <motion.button
-                className="p-3 border border-luxe-200 rounded-xl flex items-center space-x-2"
+                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -551,7 +551,7 @@ const SkinAnalysisApp = () => {
                 <span>Instagram</span>
               </motion.button>
               <motion.button
-                className="p-3 border border-luxe-200 rounded-xl flex items-center space-x-2"
+                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -559,7 +559,7 @@ const SkinAnalysisApp = () => {
                 <span>iMessage</span>
               </motion.button>
               <motion.button
-                className="p-3 border border-luxe-200 rounded-xl flex items-center space-x-2"
+                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -567,7 +567,7 @@ const SkinAnalysisApp = () => {
                 <span>TikTok</span>
               </motion.button>
               <motion.button
-                className="p-3 border border-luxe-200 rounded-xl flex items-center space-x-2"
+                className="p-3 border border-purple-200 rounded-xl flex items-center space-x-2"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
@@ -580,7 +580,7 @@ const SkinAnalysisApp = () => {
               </motion.button>
             </div>
             <motion.button
-              className="w-full mt-4 p-3 text-luxe-600 rounded-xl"
+              className="w-full mt-4 p-3 text-gray-600 rounded-xl"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowShareModal(false)}
@@ -595,11 +595,11 @@ const SkinAnalysisApp = () => {
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-white">
-      <div className="sticky top-0 z-50 bg-white border-b border-luxe-200">
+      <div className="sticky top-0 z-50 bg-white border-b border-pink-100">
         <div className="px-4 py-3 flex items-center justify-between">
           <button 
             onClick={resetToHome}
-            className="text-xl font-bold text-luxe-500 hover:opacity-80 transition-opacity"
+            className="text-xl font-bold text-black hover:opacity-80 transition-opacity"
           >
             Asentica
           </button>
@@ -610,7 +610,7 @@ const SkinAnalysisApp = () => {
                 alt={user.displayName} 
                 className="w-8 h-8 rounded-full"
               />
-              <span className="text-sm text-luxe-400">{user.displayName}</span>
+              <span className="text-sm text-gray-600">{user.displayName}</span>
             </div>
           )}
         </div>
