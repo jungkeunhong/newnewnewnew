@@ -57,16 +57,11 @@ const SkinAnalysisApp = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const imageResult = reader.result;
-        setSelectedImage(imageResult);
-        sessionStorage.setItem('selectedImage', imageResult);
+        setSelectedImage(reader.result);
+        sessionStorage.setItem('selectedImage', reader.result);
         setStep('analyzing');
         
-        // Clear the input value to allow selecting the same file again
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-        
+        // Set a timer to move to results
         setTimeout(() => {
           setStep('results');
           setAnalysisComplete(true);
@@ -82,16 +77,11 @@ const SkinAnalysisApp = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const imageResult = reader.result;
-        setSelectedImage(imageResult);
-        sessionStorage.setItem('selectedImage', imageResult);
+        setSelectedImage(reader.result);
+        sessionStorage.setItem('selectedImage', reader.result);
         setStep('analyzing');
         
-        // Clear the input value to allow selecting the same file again
-        if (cameraInputRef.current) {
-          cameraInputRef.current.value = '';
-        }
-        
+        // Set a timer to move to results
         setTimeout(() => {
           setStep('results');
           setAnalysisComplete(true);
@@ -615,18 +605,12 @@ const SkinAnalysisApp = () => {
           </button>
           {user && (
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-luxe-100">
-                <img 
-                  src={user.photoURL || 'https://via.placeholder.com/32'} 
-                  alt={user.displayName || 'User'}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = 'https://via.placeholder.com/32';
-                  }}
-                />
-              </div>
-              <span className="text-sm text-luxe-400">{user.displayName || 'User'}</span>
+              <img 
+                src={user.photoURL} 
+                alt={user.displayName} 
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="text-sm text-luxe-400">{user.displayName}</span>
             </div>
           )}
         </div>
