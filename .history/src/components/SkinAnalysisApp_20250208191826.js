@@ -62,13 +62,6 @@ const SkinAnalysisApp = () => {
     }
   }, [user, loading]);
 
-  // 세션 스토리지 초기화 함수 추가
-  useEffect(() => {
-    // 앱 시작시 세션 스토리지 초기화
-    sessionStorage.removeItem('selectedImage');
-    sessionStorage.removeItem('analysisComplete');
-  }, []);
-
   const handleImageUpload = (event) => {
     if (!user) {
       setShowAuthModal(true);
@@ -357,7 +350,7 @@ const SkinAnalysisApp = () => {
 
   const ResultsScreen = () => (
     <motion.div 
-      className="flex flex-col min-h-screen bg-white pb-20"
+      className="flex flex-col min-h-screen bg-white"
       variants={fadeIn}
       initial="initial"
       animate="animate"
@@ -684,7 +677,7 @@ const SkinAnalysisApp = () => {
   );
 
   const BottomNav = () => (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-luxe-200 px-6 py-2 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-luxe-200 px-6 py-2 z-40">
       <div className="max-w-md mx-auto flex justify-between items-center">
         <motion.button
           className={`flex flex-col items-center space-y-1 ${currentTab === 'home' ? 'text-luxe-500' : 'text-luxe-300'}`}
@@ -971,45 +964,44 @@ const SkinAnalysisApp = () => {
         </div>
       </div>
 
-      <div className="pb-20">
-        <AnimatePresence mode="wait">
-          {showMenu && <MenuOverlay key="menu" />}
-          {currentTab === 'home' && (
-            <>
-              {step === 'upload' && <UploadScreen key="upload" />}
-              {step === 'analyzing' && <AnalyzingScreen key="analyzing" />}
-              {step === 'results' && analysisComplete && <ResultsScreen key="results" />}
-              {step === 'detailed' && user && analysisComplete && (
-                <DetailedAnalysis 
-                  key="detailed"
-                  onBack={() => setStep('results')}
-                  skinMetrics={skinMetrics}
-                  selectedImage={selectedImage}
-                />
-              )}
-              {step === 'doctor' && selectedDoctor && (
-                <DoctorProfile
-                  key="doctor"
-                  doctor={selectedDoctor}
-                  onBack={() => setStep('results')}
-                />
-              )}
-              {step === 'product' && selectedProduct && (
-                <ProductDetail
-                  key="product"
-                  product={selectedProduct}
-                  onBack={() => setStep('results')}
-                  skinMetrics={skinMetrics}
-                />
-              )}
-            </>
-          )}
-          {currentTab === 'search' && <SearchScreen key="search" />}
-          {showAuthModal && (
-            <AuthModal key="auth" onClose={() => setShowAuthModal(false)} />
-          )}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        {showMenu && <MenuOverlay key="menu" />}
+        {currentTab === 'home' && (
+          <>
+            {step === 'upload' && <UploadScreen key="upload" />}
+            {step === 'analyzing' && <AnalyzingScreen key="analyzing" />}
+            {step === 'results' && analysisComplete && <ResultsScreen key="results" />}
+            {step === 'detailed' && user && analysisComplete && (
+              <DetailedAnalysis 
+                key="detailed"
+                onBack={() => setStep('results')}
+                skinMetrics={skinMetrics}
+                selectedImage={selectedImage}
+              />
+            )}
+            {step === 'doctor' && selectedDoctor && (
+              <DoctorProfile
+                key="doctor"
+                doctor={selectedDoctor}
+                onBack={() => setStep('results')}
+              />
+            )}
+            {step === 'product' && selectedProduct && (
+              <ProductDetail
+                key="product"
+                product={selectedProduct}
+                onBack={() => setStep('results')}
+                skinMetrics={skinMetrics}
+              />
+            )}
+          </>
+        )}
+        {currentTab === 'search' && <SearchScreen key="search" />}
+        {showAuthModal && (
+          <AuthModal key="auth" onClose={() => setShowAuthModal(false)} />
+        )}
+      </AnimatePresence>
+
       <BottomNav />
     </div>
   );
