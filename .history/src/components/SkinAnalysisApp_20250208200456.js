@@ -38,8 +38,7 @@ const SkinAnalysisApp = () => {
   
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-    language: 'en'
+    libraries: ['places']
   });
 
   React.useEffect(() => {
@@ -786,36 +785,27 @@ const SkinAnalysisApp = () => {
       const request = {
         location: center,
         radius: '5000',
-        query: query,
-        type: ['beauty_salon', 'doctor', 'health'],
-        language: 'en'
+        query: query + ' dermatology clinic',
+        type: ['beauty_salon', 'doctor', 'health']
       };
 
       placesService.textSearch(request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          const medspas = results
-            .filter(place => 
-              place.name.toLowerCase().includes('clinic') ||
-              place.name.toLowerCase().includes('medspa') ||
-              place.name.toLowerCase().includes('dermatology') ||
-              place.types.includes('beauty_salon') ||
-              place.types.includes('doctor')
-            )
-            .map(place => ({
-              id: place.place_id,
-              name: place.name,
-              rating: place.rating || 0,
-              reviews: place.user_ratings_total || 0,
-              distance: "calculating...",
-              location: {
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng()
-              },
-              image: place.photos?.[0]?.getUrl() || "https://via.placeholder.com/150",
-              services: ["Skin Care", "Beauty Treatment"],
-              price: place.price_level ? "$".repeat(place.price_level) : "$$",
-              address: place.formatted_address
-            }));
+          const medspas = results.map(place => ({
+            id: place.place_id,
+            name: place.name,
+            rating: place.rating || 0,
+            reviews: place.user_ratings_total || 0,
+            distance: "calculating...",
+            location: {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng()
+            },
+            image: place.photos?.[0]?.getUrl() || "https://via.placeholder.com/150",
+            services: ["Skin Care", "Beauty Treatment"],
+            price: place.price_level ? "$".repeat(place.price_level) : "$$",
+            address: place.formatted_address
+          }));
           setFilteredMedspas(medspas);
 
           if (medspas.length > 0) {
@@ -1077,196 +1067,6 @@ const SkinAnalysisApp = () => {
     </motion.div>
   );
 
-  // Add Community Screen Component
-  const CommunityScreen = () => {
-    const [posts, setPosts] = useState([
-      {
-        id: 1,
-        title: "My skin transformation journey",
-        author: "Sarah K.",
-        content: "After 3 months of consistent skincare routine...",
-        likes: 245,
-        comments: 56,
-        image: "https://images.unsplash.com/photo-1521510186458-bbbda7aef46b"
-      },
-      {
-        id: 2,
-        title: "Best products for sensitive skin",
-        author: "Mike R.",
-        content: "I've tried many products and these worked best...",
-        likes: 189,
-        comments: 43,
-        image: "https://images.unsplash.com/photo-1556228720-195a672e8a03"
-      },
-      // Add more posts
-    ]);
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <div className="p-4 space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-luxe-900">Community</h2>
-            <button className="text-luxe-500">
-              <MessageSquare className="w-5 h-5" />
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <motion.div
-                key={post.id}
-                className="bg-white rounded-xl border border-luxe-200 overflow-hidden"
-                whileHover={{ scale: 1.02 }}
-              >
-                {post.image && (
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h3 className="font-semibold text-luxe-900">{post.title}</h3>
-                  <p className="text-sm text-luxe-600 mt-1">Posted by {post.author}</p>
-                  <p className="text-luxe-700 mt-2">{post.content}</p>
-                  <div className="flex items-center space-x-4 mt-4">
-                    <button className="flex items-center space-x-1 text-luxe-500">
-                      <Star className="w-4 h-4" />
-                      <span>{post.likes}</span>
-                    </button>
-                    <button className="flex items-center space-x-1 text-luxe-500">
-                      <MessageSquare className="w-4 h-4" />
-                      <span>{post.comments}</span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Add Post Screen Component
-  const PostScreen = () => {
-    const [postContent, setPostContent] = useState("");
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <div className="p-4 space-y-4">
-          <h2 className="text-xl font-semibold text-luxe-900">Create Post</h2>
-          
-          <div className="space-y-4">
-            <textarea
-              value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
-              placeholder="Share your skincare journey..."
-              className="w-full h-32 p-4 rounded-xl border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
-            />
-            
-            <div className="flex space-x-2">
-              <button className="p-3 border border-luxe-200 rounded-xl">
-                <Camera className="w-5 h-5 text-luxe-500" />
-              </button>
-              <button className="p-3 border border-luxe-200 rounded-xl">
-                <Video className="w-5 h-5 text-luxe-500" />
-              </button>
-            </div>
-
-            <button className="w-full bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl">
-              Post
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Add MyPage Screen Component
-  const MyPageScreen = () => {
-    // Fake data for skin metrics over time
-    const timelineData = {
-      hydration: [65, 68, 72, 75, 78, 80],
-      elasticity: [70, 72, 75, 78, 80, 82],
-      acne: [40, 45, 55, 65, 75, 85],
-      texture: [60, 65, 70, 75, 78, 80],
-      pores: [55, 60, 65, 70, 75, 78],
-      pigment: [50, 55, 60, 70, 75, 80]
-    };
-
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <div className="p-4 space-y-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden">
-              <img 
-                src={user?.photoURL || 'https://via.placeholder.com/64'} 
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-luxe-900">{user?.displayName || 'User'}</h2>
-              <p className="text-luxe-600">Skin Progress Report</p>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {Object.entries(timelineData).map(([metric, values]) => (
-              <motion.div
-                key={metric}
-                className="bg-white rounded-xl border border-luxe-200 p-4"
-                variants={fadeIn}
-              >
-                <h3 className="font-semibold text-luxe-900 capitalize mb-4">{metric}</h3>
-                <div className="h-40 relative">
-                  <div className="absolute inset-0 flex items-end justify-between">
-                    {values.map((value, index) => (
-                      <div
-                        key={index}
-                        className="w-1/6 bg-gradient-to-t from-luxe-300 to-luxe-400"
-                        style={{ height: `${value}%` }}
-                      />
-                    ))}
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 flex justify-between">
-                    {months.map((month) => (
-                      <div key={month} className="text-xs text-luxe-600">
-                        {month}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
   return (
     <div className="max-w-md mx-auto min-h-screen bg-white">
       <div className="sticky top-0 z-50 bg-white border-b border-luxe-200">
@@ -1338,9 +1138,6 @@ const SkinAnalysisApp = () => {
             </>
           )}
           {currentTab === 'search' && <SearchScreen key="search" />}
-          {currentTab === 'community' && <CommunityScreen key="community" />}
-          {currentTab === 'post' && <PostScreen key="post" />}
-          {currentTab === 'mypage' && <MyPageScreen key="mypage" />}
           {showAuthModal && (
             <AuthModal key="auth" onClose={() => setShowAuthModal(false)} />
           )}

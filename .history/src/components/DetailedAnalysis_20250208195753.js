@@ -17,11 +17,6 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         { label: "Surface Hydration", value: "72%" },
         { label: "Deep Hydration", value: "68%" },
         { label: "Water Retention", value: "Good" }
-      ],
-      recommendations: [
-        "Use hyaluronic acid serum",
-        "Drink more water",
-        "Use humidifier"
       ]
     },
     elasticity: {
@@ -31,11 +26,6 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         { label: "Collagen Level", value: "High" },
         { label: "Elastin Production", value: "75%" },
         { label: "Bounce Back", value: "Excellent" }
-      ],
-      recommendations: [
-        "Use retinol products",
-        "Take collagen supplements",
-        "Facial exercises"
       ]
     },
     sunDamage: {
@@ -45,11 +35,6 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         { label: "UV Spots", value: "Minimal" },
         { label: "Melanin Level", value: "Balanced" },
         { label: "Protection Need", value: "Medium" }
-      ],
-      recommendations: [
-        "Use SPF 50+ daily",
-        "Avoid sun exposure",
-        "Use vitamin C serum"
       ]
     },
     barrier: {
@@ -59,11 +44,6 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         { label: "Strength", value: "Strong" },
         { label: "Recovery Rate", value: "Fast" },
         { label: "Sensitivity", value: "Low" }
-      ],
-      recommendations: [
-        "Use ceramide products",
-        "Gentle cleansing",
-        "Avoid harsh exfoliants"
       ]
     },
     microbiome: {
@@ -73,11 +53,6 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         { label: "Balance", value: "Good" },
         { label: "Diversity", value: "High" },
         { label: "Protection", value: "Strong" }
-      ],
-      recommendations: [
-        "Use probiotic skincare",
-        "Maintain pH balance",
-        "Avoid over-cleansing"
       ]
     },
     genetics: {
@@ -87,11 +62,6 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
         { label: "Aging Rate", value: "Slow" },
         { label: "Sensitivity", value: "Low" },
         { label: "Recovery", value: "Fast" }
-      ],
-      recommendations: [
-        "Use antioxidants",
-        "Regular skin checks",
-        "Personalized treatments"
       ]
     }
   };
@@ -101,7 +71,7 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-white p-4 pb-20"
+      className="min-h-screen bg-white p-4"
       initial="initial"
       animate="animate"
       exit="exit"
@@ -133,72 +103,56 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
           </div>
           <div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-luxe-500 to-luxe-400 bg-clip-text text-transparent">
-              Detailed Analysis
+              Overall Score: {overallScore}/10
             </h1>
-            <p className="mt-2 text-luxe-600">
-              Comprehensive breakdown of your skin health metrics
-            </p>
+            <div className="mt-2 text-luxe-600">
+              Skin Age: <span className="font-semibold">27</span>
+            </div>
           </div>
+        </div>
+
+        <div className="mt-6">
+          <p className="text-luxe-700 leading-relaxed">
+            Your skin is healthy with balanced hydration and oil levels. However, texture and elasticity can be improved.
+          </p>
+          <p className="text-luxe-500 mt-3 font-medium">
+            Key Focus Areas: Maintain hydration while adding peptide-rich products and gentle exfoliants to enhance elasticity and refine texture.
+          </p>
         </div>
       </motion.div>
 
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {Object.entries(detailedMetrics).map(([key, value], index) => (
           <motion.div
             key={key}
-            className="bg-white rounded-xl border border-luxe-200 overflow-hidden"
+            className="bg-gradient-to-br from-luxe-50 to-luxe-100 p-6 rounded-xl shadow-sm border border-luxe-200"
             variants={fadeIn}
             transition={{ delay: index * 0.1 }}
           >
-            <div className="p-4 bg-gradient-to-br from-luxe-50 to-luxe-100">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white rounded-lg text-luxe-500">
-                    {value.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold capitalize text-luxe-900">
-                    {key}
-                  </h3>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="p-3 bg-gradient-to-br from-luxe-100 to-luxe-200 rounded-lg text-luxe-500">
+                  {value.icon}
                 </div>
-                <div className="text-2xl font-bold bg-gradient-to-r from-luxe-500 to-luxe-400 bg-clip-text text-transparent">
-                  {value.score}/10
-                </div>
+                <h3 className="text-lg font-semibold capitalize text-luxe-900">{key}</h3>
+              </div>
+              <div className="text-2xl font-bold bg-gradient-to-r from-luxe-500 to-luxe-400 bg-clip-text text-transparent">
+                {value.score}/10
               </div>
             </div>
-
-            <div className="p-4 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                {value.details.map((detail, i) => (
-                  <motion.div
-                    key={i}
-                    className="bg-luxe-50 p-3 rounded-lg"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 + (i * 0.1) }}
-                  >
-                    <div className="text-sm text-luxe-600">{detail.label}</div>
-                    <div className="font-medium text-luxe-900">{detail.value}</div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="border-t border-luxe-100 pt-4">
-                <h4 className="font-medium text-luxe-900 mb-2">Recommendations</h4>
-                <ul className="space-y-2">
-                  {value.recommendations.map((rec, i) => (
-                    <motion.li
-                      key={i}
-                      className="flex items-center text-sm text-luxe-600"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + (i * 0.1) }}
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-luxe-400 mr-2" />
-                      {rec}
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
+            <div className="space-y-3">
+              {value.details.map((detail, i) => (
+                <motion.div
+                  key={i}
+                  className="flex justify-between items-center"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + (i * 0.1) }}
+                >
+                  <span className="text-luxe-600">{detail.label}</span>
+                  <span className="font-medium text-luxe-900">{detail.value}</span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         ))}

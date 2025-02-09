@@ -38,8 +38,7 @@ const SkinAnalysisApp = () => {
   
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-    language: 'en'
+    libraries: ['places']
   });
 
   React.useEffect(() => {
@@ -748,7 +747,7 @@ const SkinAnalysisApp = () => {
     const [placesService, setPlacesService] = React.useState(null);
     const [userLocation, setUserLocation] = React.useState(null);
 
-    // Get current location
+    // 현재 위치 가져오기
     const getCurrentLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -771,7 +770,7 @@ const SkinAnalysisApp = () => {
       }
     };
 
-    // Initialize Places service
+    // Places 서비스 초기화
     const initPlacesService = (map) => {
       if (window.google && map) {
         const service = new window.google.maps.places.PlacesService(map);
@@ -779,43 +778,34 @@ const SkinAnalysisApp = () => {
       }
     };
 
-    // Search places
+    // 장소 검색
     const searchPlaces = (query) => {
       if (!placesService) return;
 
       const request = {
         location: center,
         radius: '5000',
-        query: query,
-        type: ['beauty_salon', 'doctor', 'health'],
-        language: 'en'
+        query: query + ' medspa',
+        type: ['beauty_salon', 'spa', 'health']
       };
 
       placesService.textSearch(request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          const medspas = results
-            .filter(place => 
-              place.name.toLowerCase().includes('clinic') ||
-              place.name.toLowerCase().includes('medspa') ||
-              place.name.toLowerCase().includes('dermatology') ||
-              place.types.includes('beauty_salon') ||
-              place.types.includes('doctor')
-            )
-            .map(place => ({
-              id: place.place_id,
-              name: place.name,
-              rating: place.rating || 0,
-              reviews: place.user_ratings_total || 0,
-              distance: "calculating...",
-              location: {
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng()
-              },
-              image: place.photos?.[0]?.getUrl() || "https://via.placeholder.com/150",
-              services: ["Skin Care", "Beauty Treatment"],
-              price: place.price_level ? "$".repeat(place.price_level) : "$$",
-              address: place.formatted_address
-            }));
+          const medspas = results.map(place => ({
+            id: place.place_id,
+            name: place.name,
+            rating: place.rating || 0,
+            reviews: place.user_ratings_total || 0,
+            distance: "calculating...",
+            location: {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng()
+            },
+            image: place.photos?.[0]?.getUrl() || "https://via.placeholder.com/150",
+            services: ["Skin Care", "Beauty Treatment"],
+            price: place.price_level ? "$".repeat(place.price_level) : "$$",
+            address: place.formatted_address
+          }));
           setFilteredMedspas(medspas);
 
           if (medspas.length > 0) {
@@ -886,36 +876,6 @@ const SkinAnalysisApp = () => {
       mapRef.current = null;
     }, []);
 
-    const recommendedClinics = [
-      {
-        id: 'rec1',
-        name: "Dr. Smith's Dermatology",
-        specialty: "Advanced Skin Care",
-        rating: 4.9,
-        reviews: 528,
-        distance: "0.8",
-        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d"
-      },
-      {
-        id: 'rec2',
-        name: "Seoul Skin Clinic",
-        specialty: "Laser Treatment",
-        rating: 4.8,
-        reviews: 423,
-        distance: "1.2",
-        image: "https://images.unsplash.com/photo-1612349316228-5942a9b489c2"
-      },
-      {
-        id: 'rec3',
-        name: "Beauty Med Center",
-        specialty: "Anti-aging",
-        rating: 4.7,
-        reviews: 312,
-        distance: "1.5",
-        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d"
-      }
-    ];
-
     if (!isLoaded) {
       return (
         <div className="h-[calc(100vh-200px)] flex items-center justify-center">
@@ -938,7 +898,7 @@ const SkinAnalysisApp = () => {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search clinics..."
+              placeholder="Search MedSpas..."
               className="w-full p-4 pl-12 pr-20 rounded-xl border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
             />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-luxe-400" />
@@ -950,7 +910,7 @@ const SkinAnalysisApp = () => {
             </button>
           </form>
           
-          <div className="h-[calc(100vh-400px)] rounded-xl relative overflow-hidden">
+          <div className="h-[calc(100vh-200px)] rounded-xl relative overflow-hidden">
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '100%' }}
               center={center}
@@ -959,6 +919,7 @@ const SkinAnalysisApp = () => {
               onLoad={onLoad}
               onUnmount={onUnmount}
             >
+              {/* 현재 위치 마커 */}
               {userLocation && (
                 <Marker
                   position={userLocation}
@@ -974,6 +935,7 @@ const SkinAnalysisApp = () => {
                 />
               )}
 
+              {/* MedSpa 마커들 */}
               {filteredMedspas.map((medspa) => (
                 <Marker
                   key={medspa.id}
@@ -1000,48 +962,78 @@ const SkinAnalysisApp = () => {
               ))}
             </GoogleMap>
 
+            {/* 현재 위치 버튼 */}
             <button
               onClick={getCurrentLocation}
               className="absolute top-4 right-4 p-3 bg-white rounded-full shadow-lg"
             >
               <MapPin className="w-5 h-5 text-luxe-500" />
             </button>
-          </div>
 
-          {/* Recommended Clinics Section */}
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold text-luxe-900 mb-4">Recommended for You</h2>
-            <div className="space-y-4">
-              {recommendedClinics.map((clinic) => (
-                <motion.button
-                  key={clinic.id}
-                  className="w-full flex items-center p-3 border border-luxe-100 rounded-xl hover:bg-luxe-50 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    setSelectedDoctor(clinic);
-                    setStep('doctor');
-                  }}
-                >
-                  <img src={clinic.image} alt={clinic.name} className="w-16 h-16 rounded-full object-cover" />
-                  <div className="flex-1 px-3 text-left">
-                    <div className="font-medium">{clinic.name}</div>
-                    <div className="text-sm text-luxe-600">{clinic.specialty}</div>
-                    <div className="flex items-center justify-between mt-1">
-                      <div className="flex items-center text-sm text-yellow-500">
-                        <Star className="w-4 h-4 fill-current" />
-                        <span className="ml-1">{clinic.rating}</span>
-                        <span className="text-luxe-500 ml-1">({clinic.reviews})</span>
+            {/* MedSpa Card Slider */}
+            <div className="absolute bottom-4 left-0 right-0 px-4">
+              <motion.div 
+                className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+              >
+                {filteredMedspas.map(medspa => (
+                  <motion.div
+                    key={medspa.id}
+                    className={`flex-none w-full max-w-sm bg-white rounded-xl shadow-lg border ${
+                      selectedMedSpa?.id === medspa.id ? 'border-luxe-500' : 'border-luxe-200'
+                    } snap-center`}
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => {
+                      setSelectedMedSpa(medspa);
+                      if (mapRef.current) {
+                        mapRef.current.panTo(medspa.location);
+                        mapRef.current.setZoom(15);
+                      }
+                    }}
+                  >
+                    <div className="p-4">
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={medspa.image}
+                          alt={medspa.name}
+                          className="w-20 h-20 rounded-lg object-cover"
+                        />
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-luxe-900">{medspa.name}</h3>
+                          <div className="flex items-center mt-1">
+                            <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                            <span className="ml-1 text-sm">{medspa.rating}</span>
+                            <span className="text-sm text-luxe-500 ml-1">({medspa.reviews})</span>
+                          </div>
+                          <p className="text-sm text-luxe-500 mt-1">{medspa.distance} km</p>
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {medspa.services.map((service, idx) => (
+                              <span
+                                key={idx}
+                                className="text-xs px-2 py-1 bg-luxe-50 text-luxe-500 rounded-full"
+                              >
+                                {service}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-luxe-500 font-medium">{medspa.price}</span>
+                          <motion.button
+                            className="mt-2 px-4 py-2 bg-luxe-500 text-white rounded-lg text-sm"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            Book Now
+                          </motion.button>
+                        </div>
                       </div>
-                      <div className="text-sm text-luxe-600 flex items-center">
-                        <span>{clinic.distance}mi</span>
-                        <MapPin className="w-4 h-4 ml-1" />
-                      </div>
+                      <p className="text-sm text-luxe-500 mt-3">{medspa.address}</p>
                     </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-luxe-400" />
-                </motion.button>
-              ))}
+                  </motion.div>
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>
@@ -1076,196 +1068,6 @@ const SkinAnalysisApp = () => {
       </motion.div>
     </motion.div>
   );
-
-  // Add Community Screen Component
-  const CommunityScreen = () => {
-    const [posts, setPosts] = useState([
-      {
-        id: 1,
-        title: "My skin transformation journey",
-        author: "Sarah K.",
-        content: "After 3 months of consistent skincare routine...",
-        likes: 245,
-        comments: 56,
-        image: "https://images.unsplash.com/photo-1521510186458-bbbda7aef46b"
-      },
-      {
-        id: 2,
-        title: "Best products for sensitive skin",
-        author: "Mike R.",
-        content: "I've tried many products and these worked best...",
-        likes: 189,
-        comments: 43,
-        image: "https://images.unsplash.com/photo-1556228720-195a672e8a03"
-      },
-      // Add more posts
-    ]);
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <div className="p-4 space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-luxe-900">Community</h2>
-            <button className="text-luxe-500">
-              <MessageSquare className="w-5 h-5" />
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <motion.div
-                key={post.id}
-                className="bg-white rounded-xl border border-luxe-200 overflow-hidden"
-                whileHover={{ scale: 1.02 }}
-              >
-                {post.image && (
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h3 className="font-semibold text-luxe-900">{post.title}</h3>
-                  <p className="text-sm text-luxe-600 mt-1">Posted by {post.author}</p>
-                  <p className="text-luxe-700 mt-2">{post.content}</p>
-                  <div className="flex items-center space-x-4 mt-4">
-                    <button className="flex items-center space-x-1 text-luxe-500">
-                      <Star className="w-4 h-4" />
-                      <span>{post.likes}</span>
-                    </button>
-                    <button className="flex items-center space-x-1 text-luxe-500">
-                      <MessageSquare className="w-4 h-4" />
-                      <span>{post.comments}</span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Add Post Screen Component
-  const PostScreen = () => {
-    const [postContent, setPostContent] = useState("");
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <div className="p-4 space-y-4">
-          <h2 className="text-xl font-semibold text-luxe-900">Create Post</h2>
-          
-          <div className="space-y-4">
-            <textarea
-              value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
-              placeholder="Share your skincare journey..."
-              className="w-full h-32 p-4 rounded-xl border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
-            />
-            
-            <div className="flex space-x-2">
-              <button className="p-3 border border-luxe-200 rounded-xl">
-                <Camera className="w-5 h-5 text-luxe-500" />
-              </button>
-              <button className="p-3 border border-luxe-200 rounded-xl">
-                <Video className="w-5 h-5 text-luxe-500" />
-              </button>
-            </div>
-
-            <button className="w-full bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl">
-              Post
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Add MyPage Screen Component
-  const MyPageScreen = () => {
-    // Fake data for skin metrics over time
-    const timelineData = {
-      hydration: [65, 68, 72, 75, 78, 80],
-      elasticity: [70, 72, 75, 78, 80, 82],
-      acne: [40, 45, 55, 65, 75, 85],
-      texture: [60, 65, 70, 75, 78, 80],
-      pores: [55, 60, 65, 70, 75, 78],
-      pigment: [50, 55, 60, 70, 75, 80]
-    };
-
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <div className="p-4 space-y-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden">
-              <img 
-                src={user?.photoURL || 'https://via.placeholder.com/64'} 
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-luxe-900">{user?.displayName || 'User'}</h2>
-              <p className="text-luxe-600">Skin Progress Report</p>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {Object.entries(timelineData).map(([metric, values]) => (
-              <motion.div
-                key={metric}
-                className="bg-white rounded-xl border border-luxe-200 p-4"
-                variants={fadeIn}
-              >
-                <h3 className="font-semibold text-luxe-900 capitalize mb-4">{metric}</h3>
-                <div className="h-40 relative">
-                  <div className="absolute inset-0 flex items-end justify-between">
-                    {values.map((value, index) => (
-                      <div
-                        key={index}
-                        className="w-1/6 bg-gradient-to-t from-luxe-300 to-luxe-400"
-                        style={{ height: `${value}%` }}
-                      />
-                    ))}
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 flex justify-between">
-                    {months.map((month) => (
-                      <div key={month} className="text-xs text-luxe-600">
-                        {month}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-white">
@@ -1338,9 +1140,6 @@ const SkinAnalysisApp = () => {
             </>
           )}
           {currentTab === 'search' && <SearchScreen key="search" />}
-          {currentTab === 'community' && <CommunityScreen key="community" />}
-          {currentTab === 'post' && <PostScreen key="post" />}
-          {currentTab === 'mypage' && <MyPageScreen key="mypage" />}
           {showAuthModal && (
             <AuthModal key="auth" onClose={() => setShowAuthModal(false)} />
           )}
