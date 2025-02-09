@@ -9,7 +9,8 @@ import DetailedAnalysis from './DetailedAnalysis';
 import DoctorProfile from './DoctorProfile';
 import ProductDetail from './ProductDetail';
 import AuthModal from './AuthModal';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import GoogleMap from 'google-map-react';
+import Marker from './Marker';
 
 const SkinAnalysisApp = () => {
   const [user, loading] = useAuthState(auth);
@@ -35,10 +36,6 @@ const SkinAnalysisApp = () => {
   const [mapRef, setMapRef] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-  });
-
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowMessage(false);
@@ -729,14 +726,6 @@ const SkinAnalysisApp = () => {
   );
 
   const SearchScreen = () => {
-    if (!isLoaded) {
-      return (
-        <div className="h-[calc(100vh-200px)] flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-luxe-500" />
-        </div>
-      );
-    }
-
     const medspas = [
       {
         id: 1,
