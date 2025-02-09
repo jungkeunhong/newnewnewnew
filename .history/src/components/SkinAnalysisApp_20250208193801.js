@@ -34,7 +34,6 @@ const SkinAnalysisApp = () => {
   const [selectedMedSpa, setSelectedMedSpa] = useState(null);
   const [mapRef, setMapRef] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const [isMobile] = React.useState(window.innerWidth <= 768);
   
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
@@ -429,7 +428,7 @@ const SkinAnalysisApp = () => {
 
         <motion.button 
           onClick={handleDetailedAnalysisClick}
-          className="w-full bg-gradient-to-r from-luxe-500 to-luxe-400 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
+          className="w-full bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           variants={fadeIn}
@@ -786,24 +785,16 @@ const SkinAnalysisApp = () => {
       );
       setFilteredMedspas(filtered);
 
-      if (filtered.length > 0 && mapRef.current) {
+      if (filtered.length > 0) {
         const bounds = new window.google.maps.LatLngBounds();
         filtered.forEach(({ location }) => bounds.extend(location));
-        mapRef.current.fitBounds(bounds);
-        
-        // 모바일에서는 더 높은 줌 레벨 적용
-        if (isMobile) {
-          setTimeout(() => {
-            mapRef.current.setZoom(Math.min(mapRef.current.getZoom(), 14));
-          }, 100);
-        }
+        mapRef.current?.fitBounds(bounds);
       }
     };
 
     const mapOptions = {
       disableDefaultUI: true,
-      zoomControl: !isMobile, // 모바일에서는 줌 컨트롤 비활성화
-      gestureHandling: 'greedy', // 모바일에서 더 쉬운 제스처 처리
+      zoomControl: true,
       styles: [
         {
           featureType: "all",
@@ -848,14 +839,7 @@ const SkinAnalysisApp = () => {
       const bounds = new window.google.maps.LatLngBounds();
       medspas.forEach(({ location }) => bounds.extend(location));
       map.fitBounds(bounds);
-      
-      // 모바일에서는 더 높은 줌 레벨 적용
-      if (isMobile) {
-        setTimeout(() => {
-          map.setZoom(Math.min(map.getZoom(), 14));
-        }, 100);
-      }
-    }, [isMobile]);
+    }, []);
 
     const onUnmount = React.useCallback(() => {
       mapRef.current = null;
@@ -908,15 +892,7 @@ const SkinAnalysisApp = () => {
                 <Marker
                   key={medspa.id}
                   position={medspa.location}
-                  onClick={() => {
-                    setSelectedMedSpa(medspa);
-                    if (mapRef.current) {
-                      mapRef.current.panTo(medspa.location);
-                      if (isMobile) {
-                        mapRef.current.setZoom(15);
-                      }
-                    }
-                  }}
+                  onClick={() => setSelectedMedSpa(medspa)}
                   icon={{
                     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
                       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -930,10 +906,10 @@ const SkinAnalysisApp = () => {
               ))}
             </GoogleMap>
 
-            {/* MedSpa Card Slider - 모바일 최적화 */}
+            {/* MedSpa Card Slider */}
             <div className="absolute bottom-4 left-0 right-0 px-4">
               <motion.div 
-                className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar"
+                className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
               >
@@ -941,7 +917,7 @@ const SkinAnalysisApp = () => {
                   <motion.div
                     key={medspa.id}
                     className={`flex-none w-full max-w-sm bg-white rounded-xl shadow-lg border ${
-                      selectedMedSpa?.id === medspa.id ? 'border-luxe-500' : 'border-luxe-200'
+                      selectedMedSpa?.id === medspa.id ? 'border-luxe-400' : 'border-luxe-200'
                     } snap-center`}
                     whileHover={{ scale: 1.02 }}
                     onClick={() => {

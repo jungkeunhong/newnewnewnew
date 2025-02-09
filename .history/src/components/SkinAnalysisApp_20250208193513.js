@@ -34,7 +34,6 @@ const SkinAnalysisApp = () => {
   const [selectedMedSpa, setSelectedMedSpa] = useState(null);
   const [mapRef, setMapRef] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const [isMobile] = React.useState(window.innerWidth <= 768);
   
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
@@ -429,7 +428,7 @@ const SkinAnalysisApp = () => {
 
         <motion.button 
           onClick={handleDetailedAnalysisClick}
-          className="w-full bg-gradient-to-r from-luxe-500 to-luxe-400 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
+          className="w-full bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           variants={fadeIn}
@@ -741,69 +740,37 @@ const SkinAnalysisApp = () => {
     const mapRef = React.useRef(null);
     const [center, setCenter] = React.useState({ lat: 37.5665, lng: 126.9780 });
     const [zoom, setZoom] = React.useState(13);
-    const [searchInput, setSearchInput] = React.useState("");
-    const [filteredMedspas, setFilteredMedspas] = React.useState([]);
 
     const medspas = [
       {
         id: 1,
-        name: "Luxury MedSpa",
+        name: "럭셔리 메드스파",
         rating: 4.8,
         reviews: 234,
         distance: "2.5",
         location: { lat: 37.5665, lng: 126.9780 },
         image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d",
-        services: ["Skin Care", "Laser Treatment", "Anti-aging"],
+        services: ["피부 관리", "레이저 시술", "안티에이징"],
         price: "$$",
-        address: "123-45 Cheongdam-dong, Gangnam-gu, Seoul"
+        address: "서울시 강남구 청담동 123-45"
       },
       {
         id: 2,
-        name: "Premium Clinic",
+        name: "프리미엄 클리닉",
         rating: 4.9,
         reviews: 189,
         distance: "1.8",
         location: { lat: 37.5668, lng: 126.9783 },
         image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d",
-        services: ["Botox", "Filler", "Skin Regeneration"],
+        services: ["보톡스", "필러", "피부 재생"],
         price: "$$$",
-        address: "456-78 Sinsa-dong, Gangnam-gu, Seoul"
+        address: "서울시 강남구 신사동 456-78"
       }
     ];
 
-    React.useEffect(() => {
-      setFilteredMedspas(medspas);
-    }, []);
-
-    const handleSearch = (e) => {
-      e.preventDefault();
-      const filtered = medspas.filter(medspa => 
-        medspa.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-        medspa.services.some(service => 
-          service.toLowerCase().includes(searchInput.toLowerCase())
-        ) ||
-        medspa.address.toLowerCase().includes(searchInput.toLowerCase())
-      );
-      setFilteredMedspas(filtered);
-
-      if (filtered.length > 0 && mapRef.current) {
-        const bounds = new window.google.maps.LatLngBounds();
-        filtered.forEach(({ location }) => bounds.extend(location));
-        mapRef.current.fitBounds(bounds);
-        
-        // 모바일에서는 더 높은 줌 레벨 적용
-        if (isMobile) {
-          setTimeout(() => {
-            mapRef.current.setZoom(Math.min(mapRef.current.getZoom(), 14));
-          }, 100);
-        }
-      }
-    };
-
     const mapOptions = {
       disableDefaultUI: true,
-      zoomControl: !isMobile, // 모바일에서는 줌 컨트롤 비활성화
-      gestureHandling: 'greedy', // 모바일에서 더 쉬운 제스처 처리
+      zoomControl: true,
       styles: [
         {
           featureType: "all",
@@ -848,14 +815,7 @@ const SkinAnalysisApp = () => {
       const bounds = new window.google.maps.LatLngBounds();
       medspas.forEach(({ location }) => bounds.extend(location));
       map.fitBounds(bounds);
-      
-      // 모바일에서는 더 높은 줌 레벨 적용
-      if (isMobile) {
-        setTimeout(() => {
-          map.setZoom(Math.min(map.getZoom(), 14));
-        }, 100);
-      }
-    }, [isMobile]);
+    }, []);
 
     const onUnmount = React.useCallback(() => {
       mapRef.current = null;
@@ -878,22 +838,16 @@ const SkinAnalysisApp = () => {
         exit="exit"
       >
         <div className="p-4 space-y-4">
-          <form onSubmit={handleSearch} className="relative">
+          <div className="relative">
             <input
               type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search MedSpas..."
-              className="w-full p-4 pl-12 pr-20 rounded-xl border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder="메드스파 검색..."
+              className="w-full p-4 pl-12 rounded-xl border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
             />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-luxe-400" />
-            <button
-              type="submit"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-luxe-500 text-white rounded-lg text-sm"
-            >
-              Search
-            </button>
-          </form>
+          </div>
           
           <div className="h-[calc(100vh-200px)] rounded-xl relative overflow-hidden">
             <GoogleMap
@@ -904,19 +858,11 @@ const SkinAnalysisApp = () => {
               onLoad={onLoad}
               onUnmount={onUnmount}
             >
-              {filteredMedspas.map((medspa) => (
+              {medspas.map((medspa) => (
                 <Marker
                   key={medspa.id}
                   position={medspa.location}
-                  onClick={() => {
-                    setSelectedMedSpa(medspa);
-                    if (mapRef.current) {
-                      mapRef.current.panTo(medspa.location);
-                      if (isMobile) {
-                        mapRef.current.setZoom(15);
-                      }
-                    }
-                  }}
+                  onClick={() => setSelectedMedSpa(medspa)}
                   icon={{
                     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
                       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -930,18 +876,18 @@ const SkinAnalysisApp = () => {
               ))}
             </GoogleMap>
 
-            {/* MedSpa Card Slider - 모바일 최적화 */}
+            {/* MedSpa 카드 슬라이더 */}
             <div className="absolute bottom-4 left-0 right-0 px-4">
               <motion.div 
-                className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar"
+                className="flex space-x-4 overflow-x-auto pb-4 snap-x snap-mandatory"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
               >
-                {filteredMedspas.map(medspa => (
+                {medspas.map(medspa => (
                   <motion.div
                     key={medspa.id}
                     className={`flex-none w-full max-w-sm bg-white rounded-xl shadow-lg border ${
-                      selectedMedSpa?.id === medspa.id ? 'border-luxe-500' : 'border-luxe-200'
+                      selectedMedSpa?.id === medspa.id ? 'border-luxe-400' : 'border-luxe-200'
                     } snap-center`}
                     whileHover={{ scale: 1.02 }}
                     onClick={() => {
@@ -985,7 +931,7 @@ const SkinAnalysisApp = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            Book Now
+                            예약하기
                           </motion.button>
                         </div>
                       </div>
