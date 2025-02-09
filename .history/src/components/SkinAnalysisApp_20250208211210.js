@@ -1114,6 +1114,7 @@ const SkinAnalysisApp = () => {
     return (
       <motion.div className="min-h-screen bg-white pb-20">
         <div className="p-4 space-y-4">
+          {/* 필터 섹션 */}
           <div className="bg-white rounded-xl border border-luxe-200 p-4">
             <h3 className="font-semibold text-luxe-900 mb-3">Filters</h3>
             <div className="grid grid-cols-3 gap-3">
@@ -1122,17 +1123,10 @@ const SkinAnalysisApp = () => {
                 onChange={(e) => setSelectedFilters({...selectedFilters, region: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">All States</option>
-                <option value="ny">New York</option>
-                <option value="ca">California</option>
-                <option value="fl">Florida</option>
-                <option value="tx">Texas</option>
-                <option value="il">Illinois</option>
-                <option value="pa">Pennsylvania</option>
-                <option value="oh">Ohio</option>
-                <option value="ga">Georgia</option>
-                <option value="nc">North Carolina</option>
-                <option value="mi">Michigan</option>
+                <option value="all">All Regions</option>
+                <option value="seoul">Seoul</option>
+                <option value="busan">Busan</option>
+                <option value="incheon">Incheon</option>
               </select>
               
               <select
@@ -1159,6 +1153,7 @@ const SkinAnalysisApp = () => {
             </div>
           </div>
 
+          {/* Top 3 Posts */}
           <div className="bg-white rounded-xl border border-luxe-200 p-4">
             <h3 className="font-semibold text-luxe-900 mb-3">Top Posts</h3>
             <div className="space-y-3">
@@ -1178,6 +1173,7 @@ const SkinAnalysisApp = () => {
             </div>
           </div>
 
+          {/* 필터된 포스트 목록 */}
           <div className="space-y-4">
             {filteredPosts.map((post) => (
               <motion.div
@@ -1271,14 +1267,15 @@ const SkinAnalysisApp = () => {
 
   // Add MyPage Screen Component
   const MyPageScreen = () => {
+    // 피부 지표 데이터
     const timelineData = {
-      skinAge: [32, 31, 30, 29, 28, 27], // 스킨 나이를 첫 번째로 이동
       hydration: [65, 68, 72, 75, 78, 80],
       elasticity: [70, 72, 75, 78, 80, 82],
       acne: [40, 45, 55, 65, 75, 85],
       texture: [60, 65, 70, 75, 78, 80],
       pores: [55, 60, 65, 70, 75, 78],
-      pigment: [50, 55, 60, 70, 75, 80]
+      pigment: [50, 55, 60, 70, 75, 80],
+      skinAge: [32, 31, 30, 29, 28, 27] // 스킨 나이 추가
     };
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
@@ -1317,87 +1314,43 @@ const SkinAnalysisApp = () => {
                   {metric === 'skinAge' ? 'Skin Age' : metric}
                 </h3>
                 <div className="h-40 relative">
-                  {/* Y축 레이블 */}
-                  <div className="absolute left-0 top-0 bottom-8 w-8 flex flex-col justify-between">
-                    {metric === 'skinAge' ? 
-                      [50, 40, 30, 20, 10].map(value => (
-                        <div key={value} className="text-xs text-luxe-600">{value}</div>
-                      )) :
-                      [10, 8, 6, 4, 2].map(value => (
-                        <div key={value} className="text-xs text-luxe-600">{value}</div>
-                      ))
-                    }
-                  </div>
-
-                  <div className="ml-8 h-full">
-                    <svg className="w-full h-full">
-                      {/* 배경 그리드 라인 */}
-                      {[0, 1, 2, 3, 4].map((_, i) => (
-                        <line
-                          key={i}
-                          x1="0"
-                          y1={`${i * 25}%`}
-                          x2="100%"
-                          y2={`${i * 25}%`}
-                          stroke="#f8f5f2"
-                          strokeWidth="1"
-                        />
-                      ))}
-
-                      {/* 라인 그리기 */}
-                      <path
-                        d={`M ${values.map((value, i) => 
-                          `${(i * (100 / 5))}% ${metric === 'skinAge' ? 
-                            (100 - ((value - 10) * 2.5)) : 
-                            (100 - (value * 10))}%`
-                        ).join(' L ')}`}
-                        fill="none"
-                        stroke="url(#gradient)"
-                        strokeWidth="2"
-                      />
-                      
-                      {/* 데이터 포인트 (원) */}
-                      {values.map((value, i) => (
-                        <g key={i}>
-                          <circle
-                            cx={`${i * (100 / 5)}%`}
-                            cy={`${metric === 'skinAge' ? 
-                              (100 - ((value - 10) * 2.5)) : 
-                              (100 - (value * 10))}%`}
-                            r="4"
-                            className="fill-luxe-500"
-                          />
-                          <text
-                            x={`${i * (100 / 5)}%`}
-                            y={`${metric === 'skinAge' ? 
-                              (100 - ((value - 10) * 2.5)) : 
-                              (100 - (value * 10))}%`}
-                            dy="-10"
-                            textAnchor="middle"
-                            className="text-xs fill-luxe-600"
-                          >
-                            {value}
-                          </text>
-                        </g>
-                      ))}
-                      
-                      {/* 그라데이션 정의 */}
-                      <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" className="stop-color-luxe-400" />
-                          <stop offset="100%" className="stop-color-luxe-300" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
+                  <svg className="w-full h-full">
+                    {/* 라인 그리기 */}
+                    <path
+                      d={`M ${values.map((value, i) => 
+                        `${(i * (100 / 5))}% ${100 - value}%`).join(' L ')}`}
+                      fill="none"
+                      stroke="url(#gradient)"
+                      strokeWidth="2"
+                    />
                     
-                    {/* x축 레이블 */}
-                    <div className="absolute bottom-0 left-0 right-0 flex justify-between">
-                      {months.map(month => (
-                        <div key={month} className="text-xs text-luxe-600">
-                          {month}
-                        </div>
-                      ))}
-                    </div>
+                    {/* 데이터 포인트 (원) */}
+                    {values.map((value, i) => (
+                      <circle
+                        key={i}
+                        cx={`${i * (100 / 5)}%`}
+                        cy={`${100 - value}%`}
+                        r="4"
+                        className="fill-luxe-500"
+                      />
+                    ))}
+                    
+                    {/* 그라데이션 정의 */}
+                    <defs>
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" className="stop-color-luxe-400" />
+                        <stop offset="100%" className="stop-color-luxe-300" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  
+                  {/* x축 레이블 */}
+                  <div className="absolute bottom-0 left-0 right-0 flex justify-between">
+                    {months.map(month => (
+                      <div key={month} className="text-xs text-luxe-600">
+                        {month}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </motion.div>
