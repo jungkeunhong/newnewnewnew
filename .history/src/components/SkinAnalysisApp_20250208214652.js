@@ -10,7 +10,6 @@ import DoctorProfile from './DoctorProfile';
 import ProductDetail from './ProductDetail';
 import AuthModal from './AuthModal';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-import { signOut } from 'firebase/auth';
 
 const SkinAnalysisApp = () => {
   const [user, loading] = useAuthState(auth);
@@ -267,16 +266,6 @@ const SkinAnalysisApp = () => {
                 capture="user"
                 className="hidden"
               />
-
-              <motion.button 
-                onClick={() => setStep('quiz')}
-                className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-luxe-300 to-luxe-200 text-white p-4 rounded-xl hover:opacity-90 transition-opacity"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Star size={20} />
-                <span>Take Skin Quiz</span>
-              </motion.button>
             </motion.div>
           </>
         ) : (
@@ -755,20 +744,10 @@ const SkinAnalysisApp = () => {
     const [center, setCenter] = React.useState({ lat: 37.5665, lng: 126.9780 });
     const [zoom, setZoom] = React.useState(13);
     const [searchInput, setSearchInput] = React.useState("");
-    const [locationInput, setLocationInput] = React.useState("");
-    const [showSearchSuggestions, setShowSearchSuggestions] = React.useState(false);
-    const [showLocationInput, setShowLocationInput] = React.useState(false);
     const [filteredMedspas, setFilteredMedspas] = React.useState([]);
     const [placesService, setPlacesService] = React.useState(null);
     const [userLocation, setUserLocation] = React.useState(null);
     const [isSearching, setIsSearching] = React.useState(false);
-
-    const searchSuggestions = {
-      conditions: ["Acne", "Rosacea", "Eczema", "Psoriasis", "Melasma", "Hyperpigmentation"],
-      pains: ["Facial Pain", "TMJ", "Muscle Tension", "Jaw Pain", "Headaches"],
-      doctors: ["Dermatologist", "Plastic Surgeon", "Aesthetic Doctor", "Skin Specialist"],
-      procedures: ["Botox", "Fillers", "Laser Treatment", "Chemical Peel", "Microdermabrasion", "Thread Lift"]
-    };
 
     // Get current location
     const getCurrentLocation = () => {
@@ -934,104 +913,28 @@ const SkinAnalysisApp = () => {
         exit="exit"
       >
         <div className="p-4 space-y-4">
-          <div className="space-y-4">
-            {/* Search Input */}
-            <div className="relative">
-              <input
-                type="text"
-                value={searchInput}
-                onChange={(e) => {
-                  setSearchInput(e.target.value);
-                  setShowSearchSuggestions(true);
-                }}
-                onFocus={() => setShowSearchSuggestions(true)}
-                placeholder="Search conditions, pains, doctors, or procedures..."
-                className="w-full p-4 pl-12 rounded-xl border-2 border-luxe-300 focus:outline-none focus:ring-2 focus:ring-luxe-400"
-              />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-luxe-400" />
-              
-              {/* Search Suggestions */}
-              {showSearchSuggestions && (
-                <motion.div 
-                  className="absolute z-50 left-0 right-0 mt-2 bg-white rounded-xl border-2 border-luxe-200 shadow-lg"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <div className="p-4 space-y-4">
-                    {Object.entries(searchSuggestions).map(([category, items]) => (
-                      <div key={category}>
-                        <h3 className="text-luxe-600 font-semibold capitalize mb-2">{category}</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {items.map((item, index) => (
-                            <button
-                              key={index}
-                              onClick={() => {
-                                setSearchInput(item);
-                                setShowSearchSuggestions(false);
-                                handleSearch(item);
-                              }}
-                              className="px-3 py-1 rounded-full bg-luxe-100 text-luxe-600 text-sm hover:bg-luxe-200"
-                            >
-                              {item}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
+          <form onSubmit={handleSearch} className="relative">
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Search clinics..."
+              className="w-full p-4 pl-12 pr-20 rounded-xl border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
+            />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-luxe-400" />
+            <button
+              type="submit"
+              disabled={isSearching}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-luxe-500 text-white rounded-lg text-sm disabled:opacity-50"
+            >
+              {isSearching ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                'Search'
               )}
-            </div>
-
-            {/* Location Input */}
-            <div className="relative">
-              <button
-                onClick={() => setShowLocationInput(!showLocationInput)}
-                className="w-full p-4 pl-12 rounded-xl border-2 border-luxe-300 text-left focus:outline-none focus:ring-2 focus:ring-luxe-400"
-              >
-                Near me
-              </button>
-              <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-luxe-400" />
-
-              {showLocationInput && (
-                <motion.div 
-                  className="absolute z-50 left-0 right-0 mt-2 bg-white rounded-xl border-2 border-luxe-200 shadow-lg"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <div className="p-4 space-y-4">
-                    <input
-                      type="text"
-                      value={locationInput}
-                      onChange={(e) => setLocationInput(e.target.value)}
-                      placeholder="Enter address, zip code, or city"
-                      className="w-full p-3 rounded-lg border border-luxe-200 focus:outline-none focus:ring-2 focus:ring-luxe-300"
-                    />
-                    <div className="flex items-center justify-between">
-                      <button
-                        onClick={getCurrentLocation}
-                        className="flex items-center space-x-2 text-luxe-500 hover:text-luxe-600"
-                      >
-                        <MapPin className="w-5 h-5" />
-                        <span>Use current location</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleSearch(searchInput);
-                          setShowLocationInput(false);
-                        }}
-                        className="px-4 py-2 bg-luxe-500 text-white rounded-lg hover:bg-luxe-600"
-                      >
-                        Search
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          </div>
-
-          {/* Map and other content */}
+            </button>
+          </form>
+          
           <div className="h-[calc(100vh-400px)] rounded-xl relative overflow-hidden">
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -1133,6 +1036,7 @@ const SkinAnalysisApp = () => {
                       <Star className="w-4 h-4 text-yellow-500 fill-current" />
                       <span className="ml-1">{doctor.rating}</span>
                       <span className="text-luxe-500 ml-1">({doctor.reviews} reviews)</span>
+                      <span className="ml-2 text-luxe-500">{doctor.distance}mi</span>
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-luxe-400" />
@@ -1168,56 +1072,7 @@ const SkinAnalysisApp = () => {
         variants={fadeIn}
         transition={{ delay: 0.1 }}
       >
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <img src={selectedImage} alt="Analysis" className="w-24 h-24 rounded-xl object-cover" />
-            <div>
-              <h2 className="text-2xl font-bold text-luxe-900">Detailed Analysis</h2>
-              <p className="text-luxe-600">Based on your latest skin scan</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(skinMetrics).map(([key, value], index) => (
-              <motion.div
-                key={index}
-                className="bg-white p-4 rounded-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + index * 0.1 }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">{value.emoji}</span>
-                  <h3 className="font-medium capitalize">{key}</h3>
-                </div>
-                <div className="text-3xl font-bold text-luxe-500">{value.score}/10</div>
-                <p className="text-sm text-luxe-600 mt-1">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="font-semibold text-luxe-900">Recommendations</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-xl">
-                <h4 className="font-medium mb-2">Treatments</h4>
-                <ul className="space-y-2 text-sm text-luxe-600">
-                  <li>• LED Light Therapy</li>
-                  <li>• Hydrating Facial</li>
-                  <li>• Micro-needling</li>
-                </ul>
-              </div>
-              <div className="bg-white p-4 rounded-xl">
-                <h4 className="font-medium mb-2">Products</h4>
-                <ul className="space-y-2 text-sm text-luxe-600">
-                  <li>• Vitamin C Serum</li>
-                  <li>• Hyaluronic Acid</li>
-                  <li>• Niacinamide</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* ... rest of the DetailedAnalysis component ... */}
       </motion.div>
     </motion.div>
   );
@@ -1227,8 +1082,7 @@ const SkinAnalysisApp = () => {
     const [selectedFilters, setSelectedFilters] = useState({
       region: 'all',
       treatment: 'all',
-      ageGroup: 'all',
-      skinType: 'all'  // 피부 타입 필터 추가
+      ageGroup: 'all'
     });
     
     const [posts, setPosts] = useState([
@@ -1243,7 +1097,6 @@ const SkinAnalysisApp = () => {
         region: "Seoul",
         treatment: "Acne",
         ageGroup: "20s",
-        skinType: "Combination",  // 피부 타입 정보 추가
         image: "https://images.unsplash.com/photo-1521510186458-bbbda7aef46b"
       },
       {
@@ -1257,7 +1110,6 @@ const SkinAnalysisApp = () => {
         region: "Busan",
         treatment: "Sensitive Skin",
         ageGroup: "30s",
-        skinType: "Sensitive",  // 피부 타입 정보 추가
         image: "https://images.unsplash.com/photo-1556228720-195a672e8a03"
       },
       {
@@ -1271,7 +1123,6 @@ const SkinAnalysisApp = () => {
         region: "Incheon",
         treatment: "Anti-aging",
         ageGroup: "40s",
-        skinType: "Dry",  // 피부 타입 정보 추가
         image: "https://images.unsplash.com/photo-1521510186458-bbbda7aef46b"
       }
     ]);
@@ -1284,8 +1135,7 @@ const SkinAnalysisApp = () => {
       return (
         (selectedFilters.region === 'all' || post.region === selectedFilters.region) &&
         (selectedFilters.treatment === 'all' || post.treatment === selectedFilters.treatment) &&
-        (selectedFilters.ageGroup === 'all' || post.ageGroup === selectedFilters.ageGroup) &&
-        (selectedFilters.skinType === 'all' || post.skinType === selectedFilters.skinType)  // 피부 타입 필터링 추가
+        (selectedFilters.ageGroup === 'all' || post.ageGroup === selectedFilters.ageGroup)
       );
     });
 
@@ -1293,40 +1143,24 @@ const SkinAnalysisApp = () => {
       <motion.div className="min-h-screen bg-white pb-20">
         <div className="p-4 space-y-4">
           <div className="bg-white rounded-xl border border-luxe-200 p-4">
-            <h3 className="font-semibold text-luxe-900 mb-3">필터</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <h3 className="font-semibold text-luxe-900 mb-3">Filters</h3>
+            <div className="grid grid-cols-3 gap-3">
               <select
                 value={selectedFilters.region}
                 onChange={(e) => setSelectedFilters({...selectedFilters, region: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">모든 지역</option>
-                <option value="ny">뉴욕</option>
-                <option value="ca">캘리포니아</option>
-                <option value="fl">플로리다</option>
-                <option value="tx">텍사스</option>
-                <option value="il">일리노이</option>
-                <option value="pa">펜실베니아</option>
-                <option value="oh">오하이오</option>
-                <option value="ga">조지아</option>
-                <option value="nc">노스캐롤라이나</option>
-                <option value="mi">미시간</option>
-              </select>
-              
-              <select
-                value={selectedFilters.skinType}
-                onChange={(e) => setSelectedFilters({...selectedFilters, skinType: e.target.value})}
-                className="p-2 border border-luxe-200 rounded-lg"
-              >
-                <option value="all">모든 피부 타입</option>
-                <option value="Oily">지성</option>
-                <option value="Dry">건성</option>
-                <option value="Combination">복합성</option>
-                <option value="Sensitive">민감성</option>
-                <option value="Normal">중성</option>
-                <option value="Acne-Prone">여드름성</option>
-                <option value="Mature">노화성</option>
-                <option value="Dehydrated">탈수성</option>
+                <option value="all">All States</option>
+                <option value="ny">New York</option>
+                <option value="ca">California</option>
+                <option value="fl">Florida</option>
+                <option value="tx">Texas</option>
+                <option value="il">Illinois</option>
+                <option value="pa">Pennsylvania</option>
+                <option value="oh">Ohio</option>
+                <option value="ga">Georgia</option>
+                <option value="nc">North Carolina</option>
+                <option value="mi">Michigan</option>
               </select>
               
               <select
@@ -1334,17 +1168,17 @@ const SkinAnalysisApp = () => {
                 onChange={(e) => setSelectedFilters({...selectedFilters, treatment: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">피부 고민</option>
-                <option value="acne">여드름 & 트러블</option>
-                <option value="wrinkles">주름 & 탄력</option>
-                <option value="pigmentation">색소 침착</option>
-                <option value="pores">모공</option>
-                <option value="tmj">턱관절 & 안면 긴장</option>
-                <option value="lip">입술 볼륨</option>
-                <option value="dryness">건조 & 탈수</option>
-                <option value="redness">홍조 & 민감</option>
-                <option value="sagging">처짐 & 탄력</option>
-                <option value="texture">피부결</option>
+                <option value="all">All Treatments</option>
+                <option value="acne">Acne Treatment</option>
+                <option value="anti-aging">Anti-aging</option>
+                <option value="pigmentation">Pigmentation</option>
+                <option value="hydration">Hydration</option>
+                <option value="sensitive">Sensitive Skin</option>
+                <option value="pores">Pore Care</option>
+                <option value="brightening">Skin Brightening</option>
+                <option value="scarring">Scar Treatment</option>
+                <option value="rosacea">Rosacea</option>
+                <option value="eczema">Eczema</option>
               </select>
               
               <select
@@ -1352,13 +1186,13 @@ const SkinAnalysisApp = () => {
                 onChange={(e) => setSelectedFilters({...selectedFilters, ageGroup: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">모든 연령대</option>
-                <option value="10s">10대</option>
-                <option value="20s">20대</option>
-                <option value="30s">30대</option>
-                <option value="40s">40대</option>
-                <option value="50s">50대</option>
-                <option value="60+">60대 이상</option>
+                <option value="all">All Ages</option>
+                <option value="10s">10s</option>
+                <option value="20s">20s</option>
+                <option value="30s">30s</option>
+                <option value="40s">40s</option>
+                <option value="50s">50s</option>
+                <option value="60+">60+</option>
               </select>
             </div>
           </div>
@@ -1410,6 +1244,7 @@ const SkinAnalysisApp = () => {
                   </div>
                   <h3 className="font-semibold text-luxe-900">{post.title}</h3>
                   <p className="text-sm text-luxe-600 mt-1">Posted by {post.author}</p>
+                  <p className="text-luxe-700 mt-2">{post.content}</p>
                   <div className="flex items-center space-x-4 mt-4">
                     <button className="flex items-center space-x-1 text-luxe-500">
                       <Star className="w-4 h-4" />
@@ -1475,7 +1310,7 @@ const SkinAnalysisApp = () => {
   // Add MyPage Screen Component
   const MyPageScreen = () => {
     const timelineData = {
-      skinAge: [35, 34, 32, 29, 28, 25],
+      skinAge: [35, 34, 32, 29, 28, 25], // 스킨 나이를 첫 번째로 이동
       hydration: [2, 3, 2, 5, 7, 8],
       elasticity: [5, 6, 7, 6, 6, 7],
       acne: [4, 5, 5, 6, 5, 5],
@@ -1485,13 +1320,6 @@ const SkinAnalysisApp = () => {
     };
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-
-    // Calculate improvements
-    const improvements = {
-      skinAge: ((35 - 25) / 35 * 100).toFixed(1),
-      hydration: ((8 - 2) / 2 * 100).toFixed(1),
-      texture: ((8 - 2) / 2 * 100).toFixed(1)
-    };
 
     return (
       <motion.div 
@@ -1503,146 +1331,114 @@ const SkinAnalysisApp = () => {
       >
         <div className="p-4 space-y-6">
           <div className="bg-white rounded-xl border border-luxe-200 p-6">
-            <h2 className="text-xl font-semibold text-luxe-900 mb-4">How My Skin Changed</h2>
-            
-            {/* Before & After Photos */}
-            <div className="flex gap-4 mb-6">
-              <div className="flex-1">
-                <img 
-                  src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&auto=format&fit=crop"
-                  alt="First Analysis" 
-                  className="w-full h-40 object-cover rounded-lg mb-2"
-                />
-                <p className="text-center text-sm text-luxe-600">January 1, 2024</p>
-              </div>
-              <div className="flex-1">
-                <img 
-                  src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&auto=format&fit=crop"
-                  alt="Latest Analysis" 
-                  className="w-full h-40 object-cover rounded-lg mb-2"
-                />
-                <p className="text-center text-sm text-luxe-600">June 15, 2024</p>
-              </div>
-            </div>
-
-            {/* Encouraging Message */}
-            <div className="text-center mb-6 bg-luxe-50 p-4 rounded-lg">
-              <p className="text-lg text-luxe-600">
-                ✨ Amazing progress in just 6 months! Keep going!
+            <h2 className="text-xl font-semibold text-luxe-900 mb-4">Skin Progress Summary</h2>
+            <div className="space-y-2">
+              <p className="text-luxe-600">
+                Your skin has shown significant improvement over the past 6 months:
               </p>
-            </div>
-
-            {/* Improvements Grid */}
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-base font-medium text-luxe-800 mb-2">Key Improvements</h3>
-                <ul className="list-disc list-inside text-luxe-600">
-                  <li>Skin age reduced by 10 years</li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-base font-medium text-luxe-800 mb-2">Areas for Improvement</h3>
-                <ul className="list-disc list-inside text-luxe-600">
-                  <li>Maintain UV protection routine</li>
-                </ul>
-              </div>
+              <ul className="list-disc list-inside space-y-1 text-luxe-500">
+                <li>Skin age reduced by 10 years (35 → 25)</li>
+                <li>Hydration improved by 60%</li>
+                <li>Texture smoothness increased by 40%</li>
+              </ul>
+              <p className="text-luxe-600 mt-4">
+                Areas for improvement:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-luxe-500">
+                <li>Focus on pore care routine</li>
+                <li>Maintain consistent sun protection</li>
+                <li>Continue with current hydration routine</li>
+              </ul>
             </div>
           </div>
 
           <div className="space-y-6">
-            {Object.entries(timelineData).map(([metric, values], index) => (
+            {Object.entries(timelineData).map(([metric, values]) => (
               <motion.div
                 key={metric}
                 className="bg-white rounded-xl border border-luxe-200 p-4"
                 variants={fadeIn}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
               >
                 <h3 className="font-semibold text-luxe-900 capitalize mb-4">
                   {metric === 'skinAge' ? 'Skin Age' : metric}
                 </h3>
                 <div className="h-40 relative">
+                  {/* Y축 레이블 */}
                   <div className="absolute left-0 top-0 bottom-8 w-8 flex flex-col justify-between">
                     {metric === 'skinAge' ? 
-                      [50, 40, 30, 20, 10, 0].map(value => (
+                      [50, 40, 30, 20, 10].map(value => (
                         <div key={value} className="text-xs text-luxe-600">{value}</div>
                       )) :
-                      [10, 8, 6, 4, 2, 0].map(value => (
+                      [10, 8, 6, 4, 2].map(value => (
                         <div key={value} className="text-xs text-luxe-600">{value}</div>
                       ))
                     }
                   </div>
 
                   <div className="ml-8 h-full">
-                    <svg className="w-full h-full" preserveAspectRatio="none">
-                      {/* Grid Lines */}
-                      {[0, 1, 2, 3, 4, 5].map((_, i) => (
+                    <svg className="w-full h-full">
+                      {/* 배경 그리드 라인 */}
+                      {[0, 1, 2, 3, 4].map((_, i) => (
                         <line
                           key={i}
                           x1="0"
-                          y1={`${i * 20}%`}
+                          y1={`${i * 25}%`}
                           x2="100%"
-                          y2={`${i * 20}%`}
+                          y2={`${i * 25}%`}
                           stroke="#f8f5f2"
                           strokeWidth="1"
                         />
                       ))}
 
-                      {/* Smooth Line Graph */}
+                      {/* 부드러운 라인 그래프 */}
                       <path
-                        d={`M ${values.map((value, i) => {
-                          const x = i * (100 / (values.length - 1));
-                          const y = metric === 'skinAge' ? 
-                            (100 - (value / 50 * 100)) : 
-                            (100 - (value / 10 * 100));
-                          return `${x},${y}`;
-                        }).join(' C ')}`.replace(/L/g, '')}
+                        d={`M ${values.map((value, i) => 
+                          `${(i * (100 / 5))}% ${metric === 'skinAge' ? 
+                            (100 - ((value - 10) * 2.5)) : 
+                            (100 - (value * 10))}%`
+                        ).join(' C ')}}`}
                         fill="none"
-                        stroke={`url(#gradient-${metric})`}
-                        strokeWidth="2.5"
+                        stroke="url(#gradient)"
+                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
-
-                      {/* Data Points */}
-                      {values.map((value, i) => {
-                        const x = i * (100 / (values.length - 1));
-                        const y = metric === 'skinAge' ? 
-                          (100 - (value / 50 * 100)) : 
-                          (100 - (value / 10 * 100));
-                        return (
-                          <g key={i}>
-                            <circle
-                              cx={`${x}%`}
-                              cy={`${y}%`}
-                              r="4"
-                              className="fill-luxe-500"
-                            />
-                            <text
-                              x={`${x}%`}
-                              y={`${y}%`}
-                              dy="-10"
-                              textAnchor="middle"
-                              className="text-xs fill-luxe-600"
-                            >
-                              {value}
-                            </text>
-                          </g>
-                        );
-                      })}
-
-                      {/* Gradient Definition */}
+                      
+                      {/* 데이터 포인트 (원) */}
+                      {values.map((value, i) => (
+                        <g key={i}>
+                          <circle
+                            cx={`${i * (100 / 5)}%`}
+                            cy={`${metric === 'skinAge' ? 
+                              (100 - ((value - 10) * 2.5)) : 
+                              (100 - (value * 10))}%`}
+                            r="4"
+                            className="fill-luxe-500"
+                          />
+                          <text
+                            x={`${i * (100 / 5)}%`}
+                            y={`${metric === 'skinAge' ? 
+                              (100 - ((value - 10) * 2.5)) : 
+                              (100 - (value * 10))}%`}
+                            dy="-10"
+                            textAnchor="middle"
+                            className="text-xs fill-luxe-600"
+                          >
+                            {value}
+                          </text>
+                        </g>
+                      ))}
+                      
+                      {/* 그라데이션 정의 */}
                       <defs>
-                        <linearGradient id={`gradient-${metric}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#b37a4e" />
-                          <stop offset="100%" stopColor="#c49a7a" />
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" className="stop-color-luxe-400" />
+                          <stop offset="100%" className="stop-color-luxe-300" />
                         </linearGradient>
                       </defs>
                     </svg>
-
-                    {/* X-axis Labels */}
+                    
+                    {/* x축 레이블 */}
                     <div className="absolute bottom-0 left-0 right-0 flex justify-between">
                       {months.map(month => (
                         <div key={month} className="text-xs text-luxe-600">
@@ -1659,175 +1455,6 @@ const SkinAnalysisApp = () => {
       </motion.div>
     );
   };
-
-  // Add SkinQuizScreen Component
-  const SkinQuizScreen = () => {
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [answers, setAnswers] = useState({});
-
-    const questions = [
-      {
-        id: 1,
-        question: "What is your primary skin goal?",
-        options: ["Clear Acne", "Anti-aging", "Even Skin Tone", "Hydration", "Pore Refinement"]
-      },
-      {
-        id: 2,
-        question: "Which facial area concerns you the most?",
-        options: ["Forehead", "Under Eyes", "Cheeks", "Jaw Line", "Nose Area"]
-      },
-      {
-        id: 3,
-        question: "What type of treatments interest you?",
-        options: ["Topical Products", "Facial Treatments", "Injectables", "Laser Treatments", "Natural Remedies"]
-      },
-      {
-        id: 4,
-        question: "How would you describe your skin's texture?",
-        options: ["Smooth", "Rough", "Bumpy", "Uneven", "Fine Lines"]
-      },
-      {
-        id: 5,
-        question: "What's your biggest skincare challenge?",
-        options: ["Breakouts", "Aging Signs", "Sensitivity", "Dryness", "Oiliness"]
-      },
-      {
-        id: 6,
-        question: "Which skin improvement would make you most confident?",
-        options: ["Brighter Complexion", "Fewer Wrinkles", "Less Acne", "Smaller Pores", "Even Tone"]
-      },
-      {
-        id: 7,
-        question: "How often do you receive professional skin treatments?",
-        options: ["Never", "Few times a year", "Monthly", "Bi-weekly", "Weekly"]
-      },
-      {
-        id: 8,
-        question: "What's your preferred treatment method?",
-        options: ["Quick & Effective", "Natural & Gentle", "High-tech", "Traditional", "Combination"]
-      },
-      {
-        id: 9,
-        question: "How much time do you spend on skincare daily?",
-        options: ["5 minutes", "10-15 minutes", "15-30 minutes", "30+ minutes", "Varies"]
-      },
-      {
-        id: 10,
-        question: "What's your investment priority in skincare?",
-        options: ["Prevention", "Treatment", "Maintenance", "Enhancement", "Recovery"]
-      }
-    ];
-
-    const handleAnswer = (answer) => {
-      setAnswers({...answers, [currentQuestion]: answer});
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
-        // Quiz completed - analyze results and move to analysis
-        const quizResults = analyzeQuizResults(answers);
-        setSelectedImage("https://images.unsplash.com/photo-1601412436009-d964bd02edbc?w=800&auto=format&fit=crop");
-        sessionStorage.setItem('selectedImage', "https://images.unsplash.com/photo-1601412436009-d964bd02edbc?w=800&auto=format&fit=crop");
-        setStep('analyzing');
-        setTimeout(() => {
-          setStep('results');
-          setAnalysisComplete(true);
-          sessionStorage.setItem('analysisComplete', 'true');
-        }, 3000);
-      }
-    };
-
-    const analyzeQuizResults = (answers) => {
-      // 퀴즈 결과를 분석하여 맞춤형 추천을 생성하는 로직
-      // 이 부분은 실제 비즈니스 로직에 맞게 구현해야 합니다
-      return {
-        skinType: "Combination",
-        concerns: ["Acne", "Hydration"],
-        recommendations: {
-          treatments: ["Chemical Peel", "LED Therapy"],
-          products: ["Salicylic Acid Cleanser", "Hyaluronic Acid Serum"]
-        }
-      };
-    };
-
-    return (
-      <motion.div 
-        className="min-h-screen bg-white p-4"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <motion.button
-          onClick={() => setStep('upload')}
-          className="flex items-center space-x-2 text-luxe-500 mb-6"
-          whileHover={{ x: -5 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <ChevronLeft className="w-5 h-5" />
-          <span>Back</span>
-        </motion.button>
-
-        <div className="max-w-md mx-auto space-y-6">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-luxe-900 mb-2">Skin Quiz</h2>
-            <p className="text-luxe-600">Question {currentQuestion + 1} of {questions.length}</p>
-          </div>
-
-          <motion.div 
-            className="bg-white rounded-xl border border-luxe-200 p-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <h3 className="text-xl font-medium text-luxe-900 mb-6">
-              {questions[currentQuestion].question}
-            </h3>
-
-            <div className="space-y-3">
-              {questions[currentQuestion].options.map((option, index) => (
-                <motion.button
-                  key={index}
-                  className="w-full p-4 text-left rounded-xl border border-luxe-200 hover:bg-luxe-50 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleAnswer(option)}
-                >
-                  {option}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-
-          <div className="flex justify-center">
-            <div className="flex space-x-2">
-              {questions.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full ${
-                    index === currentQuestion ? 'bg-luxe-500' : 'bg-luxe-200'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // logout 함수 추가
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      resetToHome();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
-
-  // 페이지 변경시 스크롤 위치 리셋
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [step, currentTab]);
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-white">
@@ -1853,12 +1480,7 @@ const SkinAnalysisApp = () => {
                     }}
                   />
                 </div>
-                <button 
-                  onClick={handleLogout}
-                  className="text-sm text-luxe-400 hover:text-luxe-600"
-                >
-                  Logout
-                </button>
+                <span className="text-sm text-luxe-400">{user.displayName || 'User'}</span>
               </div>
             )}
             <button
@@ -1879,7 +1501,6 @@ const SkinAnalysisApp = () => {
               {step === 'upload' && <UploadScreen key="upload" />}
               {step === 'analyzing' && <AnalyzingScreen key="analyzing" />}
               {step === 'results' && analysisComplete && <ResultsScreen key="results" />}
-              {step === 'quiz' && <SkinQuizScreen key="quiz" />}
               {step === 'detailed' && user && analysisComplete && (
                 <DetailedAnalysis 
                   key="detailed"

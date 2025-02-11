@@ -1168,56 +1168,7 @@ const SkinAnalysisApp = () => {
         variants={fadeIn}
         transition={{ delay: 0.1 }}
       >
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <img src={selectedImage} alt="Analysis" className="w-24 h-24 rounded-xl object-cover" />
-            <div>
-              <h2 className="text-2xl font-bold text-luxe-900">Detailed Analysis</h2>
-              <p className="text-luxe-600">Based on your latest skin scan</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(skinMetrics).map(([key, value], index) => (
-              <motion.div
-                key={index}
-                className="bg-white p-4 rounded-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + index * 0.1 }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">{value.emoji}</span>
-                  <h3 className="font-medium capitalize">{key}</h3>
-                </div>
-                <div className="text-3xl font-bold text-luxe-500">{value.score}/10</div>
-                <p className="text-sm text-luxe-600 mt-1">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="font-semibold text-luxe-900">Recommendations</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-xl">
-                <h4 className="font-medium mb-2">Treatments</h4>
-                <ul className="space-y-2 text-sm text-luxe-600">
-                  <li>• LED Light Therapy</li>
-                  <li>• Hydrating Facial</li>
-                  <li>• Micro-needling</li>
-                </ul>
-              </div>
-              <div className="bg-white p-4 rounded-xl">
-                <h4 className="font-medium mb-2">Products</h4>
-                <ul className="space-y-2 text-sm text-luxe-600">
-                  <li>• Vitamin C Serum</li>
-                  <li>• Hyaluronic Acid</li>
-                  <li>• Niacinamide</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* ... rest of the DetailedAnalysis component ... */}
       </motion.div>
     </motion.div>
   );
@@ -1227,8 +1178,7 @@ const SkinAnalysisApp = () => {
     const [selectedFilters, setSelectedFilters] = useState({
       region: 'all',
       treatment: 'all',
-      ageGroup: 'all',
-      skinType: 'all'  // 피부 타입 필터 추가
+      ageGroup: 'all'
     });
     
     const [posts, setPosts] = useState([
@@ -1243,7 +1193,6 @@ const SkinAnalysisApp = () => {
         region: "Seoul",
         treatment: "Acne",
         ageGroup: "20s",
-        skinType: "Combination",  // 피부 타입 정보 추가
         image: "https://images.unsplash.com/photo-1521510186458-bbbda7aef46b"
       },
       {
@@ -1257,7 +1206,6 @@ const SkinAnalysisApp = () => {
         region: "Busan",
         treatment: "Sensitive Skin",
         ageGroup: "30s",
-        skinType: "Sensitive",  // 피부 타입 정보 추가
         image: "https://images.unsplash.com/photo-1556228720-195a672e8a03"
       },
       {
@@ -1271,7 +1219,6 @@ const SkinAnalysisApp = () => {
         region: "Incheon",
         treatment: "Anti-aging",
         ageGroup: "40s",
-        skinType: "Dry",  // 피부 타입 정보 추가
         image: "https://images.unsplash.com/photo-1521510186458-bbbda7aef46b"
       }
     ]);
@@ -1284,8 +1231,7 @@ const SkinAnalysisApp = () => {
       return (
         (selectedFilters.region === 'all' || post.region === selectedFilters.region) &&
         (selectedFilters.treatment === 'all' || post.treatment === selectedFilters.treatment) &&
-        (selectedFilters.ageGroup === 'all' || post.ageGroup === selectedFilters.ageGroup) &&
-        (selectedFilters.skinType === 'all' || post.skinType === selectedFilters.skinType)  // 피부 타입 필터링 추가
+        (selectedFilters.ageGroup === 'all' || post.ageGroup === selectedFilters.ageGroup)
       );
     });
 
@@ -1293,40 +1239,24 @@ const SkinAnalysisApp = () => {
       <motion.div className="min-h-screen bg-white pb-20">
         <div className="p-4 space-y-4">
           <div className="bg-white rounded-xl border border-luxe-200 p-4">
-            <h3 className="font-semibold text-luxe-900 mb-3">필터</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <h3 className="font-semibold text-luxe-900 mb-3">Filters</h3>
+            <div className="grid grid-cols-3 gap-3">
               <select
                 value={selectedFilters.region}
                 onChange={(e) => setSelectedFilters({...selectedFilters, region: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">모든 지역</option>
-                <option value="ny">뉴욕</option>
-                <option value="ca">캘리포니아</option>
-                <option value="fl">플로리다</option>
-                <option value="tx">텍사스</option>
-                <option value="il">일리노이</option>
-                <option value="pa">펜실베니아</option>
-                <option value="oh">오하이오</option>
-                <option value="ga">조지아</option>
-                <option value="nc">노스캐롤라이나</option>
-                <option value="mi">미시간</option>
-              </select>
-              
-              <select
-                value={selectedFilters.skinType}
-                onChange={(e) => setSelectedFilters({...selectedFilters, skinType: e.target.value})}
-                className="p-2 border border-luxe-200 rounded-lg"
-              >
-                <option value="all">모든 피부 타입</option>
-                <option value="Oily">지성</option>
-                <option value="Dry">건성</option>
-                <option value="Combination">복합성</option>
-                <option value="Sensitive">민감성</option>
-                <option value="Normal">중성</option>
-                <option value="Acne-Prone">여드름성</option>
-                <option value="Mature">노화성</option>
-                <option value="Dehydrated">탈수성</option>
+                <option value="all">All States</option>
+                <option value="ny">New York</option>
+                <option value="ca">California</option>
+                <option value="fl">Florida</option>
+                <option value="tx">Texas</option>
+                <option value="il">Illinois</option>
+                <option value="pa">Pennsylvania</option>
+                <option value="oh">Ohio</option>
+                <option value="ga">Georgia</option>
+                <option value="nc">North Carolina</option>
+                <option value="mi">Michigan</option>
               </select>
               
               <select
@@ -1334,17 +1264,17 @@ const SkinAnalysisApp = () => {
                 onChange={(e) => setSelectedFilters({...selectedFilters, treatment: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">피부 고민</option>
-                <option value="acne">여드름 & 트러블</option>
-                <option value="wrinkles">주름 & 탄력</option>
-                <option value="pigmentation">색소 침착</option>
-                <option value="pores">모공</option>
-                <option value="tmj">턱관절 & 안면 긴장</option>
-                <option value="lip">입술 볼륨</option>
-                <option value="dryness">건조 & 탈수</option>
-                <option value="redness">홍조 & 민감</option>
-                <option value="sagging">처짐 & 탄력</option>
-                <option value="texture">피부결</option>
+                <option value="all">Skin Concern</option>
+                <option value="acne">Acne & Breakouts</option>
+                <option value="wrinkles">Fine Lines & Wrinkles</option>
+                <option value="pigmentation">Dark Spots & Pigmentation</option>
+                <option value="pores">Large Pores</option>
+                <option value="tmj">TMJ & Facial Tension</option>
+                <option value="lip">Lip Enhancement</option>
+                <option value="dryness">Dryness & Dehydration</option>
+                <option value="redness">Redness & Sensitivity</option>
+                <option value="sagging">Skin Laxity & Sagging</option>
+                <option value="texture">Uneven Texture</option>
               </select>
               
               <select
@@ -1352,13 +1282,13 @@ const SkinAnalysisApp = () => {
                 onChange={(e) => setSelectedFilters({...selectedFilters, ageGroup: e.target.value})}
                 className="p-2 border border-luxe-200 rounded-lg"
               >
-                <option value="all">모든 연령대</option>
-                <option value="10s">10대</option>
-                <option value="20s">20대</option>
-                <option value="30s">30대</option>
-                <option value="40s">40대</option>
-                <option value="50s">50대</option>
-                <option value="60+">60대 이상</option>
+                <option value="all">All Ages</option>
+                <option value="10s">10s</option>
+                <option value="20s">20s</option>
+                <option value="30s">30s</option>
+                <option value="40s">40s</option>
+                <option value="50s">50s</option>
+                <option value="60+">60+</option>
               </select>
             </div>
           </div>
@@ -1503,13 +1433,13 @@ const SkinAnalysisApp = () => {
       >
         <div className="p-4 space-y-6">
           <div className="bg-white rounded-xl border border-luxe-200 p-6">
-            <h2 className="text-xl font-semibold text-luxe-900 mb-4">How My Skin Changed</h2>
+            <h2 className="text-xl font-semibold text-luxe-900 mb-4">Progress Overview</h2>
             
             {/* Before & After Photos */}
             <div className="flex gap-4 mb-6">
               <div className="flex-1">
                 <img 
-                  src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=800&auto=format&fit=crop"
                   alt="First Analysis" 
                   className="w-full h-40 object-cover rounded-lg mb-2"
                 />
@@ -1517,7 +1447,7 @@ const SkinAnalysisApp = () => {
               </div>
               <div className="flex-1">
                 <img 
-                  src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1601412436009-d964bd02edbc?w=800&auto=format&fit=crop"
                   alt="Latest Analysis" 
                   className="w-full h-40 object-cover rounded-lg mb-2"
                 />
@@ -1598,7 +1528,7 @@ const SkinAnalysisApp = () => {
                             (100 - (value / 50 * 100)) : 
                             (100 - (value / 10 * 100));
                           return `${x},${y}`;
-                        }).join(' C ')}`.replace(/L/g, '')}
+                        }).join(' L ')}`}
                         fill="none"
                         stroke={`url(#gradient-${metric})`}
                         strokeWidth="2.5"
@@ -1607,31 +1537,29 @@ const SkinAnalysisApp = () => {
                       />
 
                       {/* Data Points */}
-                      {values.map((value, i) => {
-                        const x = i * (100 / (values.length - 1));
-                        const y = metric === 'skinAge' ? 
-                          (100 - (value / 50 * 100)) : 
-                          (100 - (value / 10 * 100));
-                        return (
-                          <g key={i}>
-                            <circle
-                              cx={`${x}%`}
-                              cy={`${y}%`}
-                              r="4"
-                              className="fill-luxe-500"
-                            />
-                            <text
-                              x={`${x}%`}
-                              y={`${y}%`}
-                              dy="-10"
-                              textAnchor="middle"
-                              className="text-xs fill-luxe-600"
-                            >
-                              {value}
-                            </text>
-                          </g>
-                        );
-                      })}
+                      {values.map((value, i) => (
+                        <g key={i}>
+                          <circle
+                            cx={`${i * (100 / (values.length - 1))}%`}
+                            cy={`${metric === 'skinAge' ? 
+                              (100 - (value / 50 * 100)) : 
+                              (100 - (value / 10 * 100))}%`}
+                            r="4"
+                            className="fill-luxe-500"
+                          />
+                          <text
+                            x={`${i * (100 / (values.length - 1))}%`}
+                            y={`${metric === 'skinAge' ? 
+                              (100 - (value / 50 * 100)) : 
+                              (100 - (value / 10 * 100))}%`}
+                            dy="-10"
+                            textAnchor="middle"
+                            className="text-xs fill-luxe-600"
+                          >
+                            {value}
+                          </text>
+                        </g>
+                      ))}
 
                       {/* Gradient Definition */}
                       <defs>
