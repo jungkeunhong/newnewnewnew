@@ -1887,15 +1887,13 @@ const SkinAnalysisApp = () => {
     <div className="relative">
       <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-[#3E2723]/10">
         <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
-          {step !== 'landing' && (
-            <button
-              onClick={() => setStep('landing')}
-              className="flex items-center space-x-2 text-luxe-500"
-            >
-              <ChevronLeft className="w-5 h-5" />
-              <span>Back</span>
-            </button>
-          )}
+          <button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-luxe-500"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span>Back</span>
+          </button>
           <button 
             onClick={() => setStep('results')} 
             className="cormorant text-2xl text-center text-[#3E2723]"

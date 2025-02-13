@@ -10,7 +10,7 @@ const QuizIntro = ({ onStartQuiz }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="flex-1 px-8 py-12 flex flex-col justify-between max-h-[90vh]">
+      <div className="flex-1 p-6 flex flex-col justify-between max-h-screen">
         <div className="space-y-6">
           <h1 className="text-3xl font-light text-[#3E2723]">
             Let's find your<br />perfect treatment
@@ -21,7 +21,7 @@ const QuizIntro = ({ onStartQuiz }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-5 py-8">
+        <div className="grid grid-cols-2 gap-4 py-4">
           {[
             {
               title: "2 min",
@@ -46,12 +46,12 @@ const QuizIntro = ({ onStartQuiz }) => {
           ].map((item, index) => (
             <motion.div
               key={index}
-              className="bg-[#3E2723]/5 p-5 rounded-2xl"
+              className="bg-[#3E2723]/5 p-4 rounded-xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="text-2xl mb-3">{item.icon}</div>
+              <div className="text-2xl mb-2">{item.icon}</div>
               <div className="text-sm font-medium text-[#3E2723]">{item.title}</div>
               <div className="text-xs text-[#3E2723]/70">{item.description}</div>
             </motion.div>
@@ -60,7 +60,7 @@ const QuizIntro = ({ onStartQuiz }) => {
 
         <motion.button
           onClick={onStartQuiz}
-          className="w-full bg-[#3E2723] text-white py-4 px-6 rounded-2xl flex items-center justify-between mb-4"
+          className="w-full bg-[#3E2723] text-white py-4 px-6 rounded-xl flex items-center justify-between mb-4"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >

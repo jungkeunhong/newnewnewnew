@@ -16,14 +16,14 @@ const LandingPage = ({ onStartQuiz }) => {
         </h1>
       </div>
 
-      <div className="relative h-[75vh] px-6 py-12 bg-white">
-        <div className="rounded-[5rem] overflow-hidden h-full bg-white shadow-lg">
+      <div className="relative h-[80vh] p-4 bg-white">
+        <div className="rounded-[2rem] overflow-hidden h-full bg-white shadow-lg">
           <video
             autoPlay
             muted
             loop
             playsInline
-            className="w-full h-full object-cover rounded-[5rem]"
+            className="w-full h-full object-cover rounded-[2rem]"
             poster="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070"
           >
             <source
@@ -32,7 +32,7 @@ const LandingPage = ({ onStartQuiz }) => {
             />
             Your browser does not support the video tag.
           </video>
-          <div className="absolute inset-0 bg-black/30 rounded-[3rem]" />
+          <div className="absolute inset-0 bg-black/30 rounded-[2rem]" />
         </div>
       </div>
 

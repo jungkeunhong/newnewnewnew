@@ -17,13 +17,13 @@ const LandingPage = ({ onStartQuiz }) => {
       </div>
 
       <div className="relative h-[75vh] px-6 py-12 bg-white">
-        <div className="rounded-[5rem] overflow-hidden h-full bg-white shadow-lg">
+        <div className="rounded-[3rem] overflow-hidden h-full bg-white shadow-lg">
           <video
             autoPlay
             muted
             loop
             playsInline
-            className="w-full h-full object-cover rounded-[5rem]"
+            className="w-full h-full object-cover rounded-[3rem]"
             poster="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070"
           >
             <source
