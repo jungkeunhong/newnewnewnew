@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.gotu-regular {
+  font-family: "Gotu", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  p, span, div, button, input, select, textarea {
+    font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+} 
