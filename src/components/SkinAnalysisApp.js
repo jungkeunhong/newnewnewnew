@@ -376,61 +376,32 @@ const SkinAnalysisApp = () => {
   };
 
   const ResultsScreen = () => (
-    <motion.div 
-      className="flex flex-col min-h-screen bg-white pb-20"
-      variants={fadeIn}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-    >
+    <div className="flex flex-col min-h-screen bg-white pb-20">
       <div id="results-content" className="flex-1 overflow-auto p-4 space-y-6">
-        <motion.div 
-          className="bg-gradient-to-br from-luxe-100 to-luxe-50 rounded-2xl p-6 shadow-sm border border-luxe-200"
-          variants={fadeIn}
-          transition={{ delay: 0.1 }}
-        >
+        <div className="bg-gradient-to-br from-luxe-100 to-luxe-50 rounded-2xl p-6 shadow-sm border border-luxe-200">
           <div className="flex items-start gap-4">
-            <motion.div 
-              className="w-24 h-24 rounded-xl overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-            >
+            <div className="w-24 h-24 rounded-xl overflow-hidden">
               <img src={selectedImage} alt="Your photo" className="w-full h-full object-cover" />
-            </motion.div>
+            </div>
             <div>
-              <motion.h2 
-                className="text-2xl font-bold bg-gradient-to-r from-luxe-400 to-luxe-300 bg-clip-text text-transparent"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-luxe-400 to-luxe-300 bg-clip-text text-transparent">
                 Overall Score: 7.2/10
-              </motion.h2>
-              <motion.div 
-                className="mt-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              </h2>
+              <div className="mt-2">
                 Skin Age: <span className="font-semibold">27</span>
-              </motion.div>
-              <motion.div 
-                className="text-sm text-luxe-600"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              </div>
+              <div className="text-sm text-luxe-600">
                 Skin Type: Combination
-              </motion.div>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-2 gap-4">
           {Object.entries(skinMetrics).map(([key, value], i) => (
-            <motion.div
+            <div
               key={i}
               className="bg-white p-4 rounded-xl shadow-sm border border-luxe-200"
-              variants={fadeIn}
-              transition={{ delay: 0.2 + (i * 0.1) }}
             >
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-luxe-100 to-luxe-50 rounded-lg">
@@ -443,28 +414,22 @@ const SkinAnalysisApp = () => {
               <div className="font-medium mt-2">{key.charAt(0).toUpperCase() + key.slice(1)}</div>
               <div className="text-sm text-luxe-600">{value.description}</div>
               <div className="text-xs text-luxe-500 mt-1">Recommended: {value.treatments.join(", ")}</div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.button 
+        <button 
           onClick={handleDetailedAnalysisClick}
           className="w-full bg-gradient-to-r from-luxe-500 to-luxe-400 text-white p-4 rounded-xl shadow-sm flex items-center justify-between hover:opacity-90 transition-opacity"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          variants={fadeIn}
-          transition={{ delay: 0.8 }}
         >
           <span className="font-medium">View Detailed Analysis</span>
           <ChevronRight className="w-5 h-5 text-white" />
-        </motion.button>
+        </button>
 
-        <motion.div 
-          className="bg-white rounded-xl p-4 border border-luxe-200"
-          variants={fadeIn}
-          transition={{ delay: 0.9 }}
-        >
-          <h2 className="font-semibold mb-3 text-luxe-900">Skincare for your acne</h2>
+        <div className="bg-white rounded-xl p-4 border border-luxe-200">
+          <h2 className="font-semibold mb-3 text-luxe-900">Your Skin Profile</h2>
           <div className="space-y-3">
             {[
               {
@@ -482,14 +447,11 @@ const SkinAnalysisApp = () => {
                 image: "https://m.media-amazon.com/images/I/71irav7XAsL._SX679_.jpg"
               }
             ].map((product, i) => (
-              <motion.button
+              <button
                 key={i}
                 className="w-full flex items-center p-3 border border-luxe-100 rounded-xl hover:bg-luxe-50 transition-colors"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1 + (i * 0.1) }}
                 onClick={() => {
                   setSelectedProduct(product);
                   setStep('product');
@@ -506,10 +468,10 @@ const SkinAnalysisApp = () => {
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-luxe-400" />
-              </motion.button>
+              </button>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         <motion.div 
           className="bg-white rounded-xl p-4 border border-luxe-200"
@@ -628,29 +590,25 @@ const SkinAnalysisApp = () => {
 
       <div className="sticky bottom-0 bg-white p-4 border-t border-luxe-200">
         <div className="flex gap-3">
-          <motion.button 
+          <button 
             onClick={handleSaveReport}
             className="flex-1 bg-gradient-to-br from-luxe-50 to-luxe-100 text-luxe-500 border border-luxe-200 p-4 rounded-xl flex items-center justify-center space-x-2"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            variants={fadeIn}
-            transition={{ delay: 1.3 }}
           >
             <Download className="w-5 h-5" />
             <span>Save Report</span>
-          </motion.button>
+          </button>
 
-          <motion.button 
+          <button 
             onClick={() => setShowShareModal(true)}
             className="flex-1 bg-gradient-to-r from-luxe-400 to-luxe-300 text-white p-4 rounded-xl flex items-center justify-center space-x-2"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            variants={fadeIn}
-            transition={{ delay: 1.3 }}
           >
             <Share2 className="w-5 h-5" />
             <span>Share Results</span>
-          </motion.button>
+          </button>
         </div>
       </div>
 
@@ -716,7 +674,7 @@ const SkinAnalysisApp = () => {
           </motion.div>
         </motion.div>
       )}
-    </motion.div>
+    </div>
   );
 
   const MenuOverlay = () => (
@@ -773,6 +731,7 @@ const SkinAnalysisApp = () => {
           <Search size={24} />
           <span className="text-xs">Search</span>
         </motion.button>
+        {/* My Skin button temporarily disabled
         <motion.button
           className={`flex flex-col items-center space-y-1 ${currentTab === 'home' ? 'text-luxe-500' : 'text-luxe-300'}`}
           whileHover={{ scale: 1.1 }}
@@ -787,6 +746,7 @@ const SkinAnalysisApp = () => {
           </svg>
           <span className="text-xs">My Skin</span>
         </motion.button>
+        */}
       </div>
     </div>
   );
@@ -852,13 +812,7 @@ const SkinAnalysisApp = () => {
     };
 
     return (
-      <motion.div 
-        className="min-h-screen bg-white pb-20"
-        variants={fadeIn}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
+      <div className="min-h-screen bg-white pb-20">
         <div className="p-4 space-y-6">
           <div className="flex justify-between items-center">
             <div className="bg-gradient-to-br from-luxe-50 to-luxe-100 rounded-xl p-4 flex-1 mr-4">
@@ -869,10 +823,9 @@ const SkinAnalysisApp = () => {
 
           <div className="space-y-4">
             {recommendedClinics.map((clinic, index) => (
-              <motion.div
+              <div
                 key={clinic.id}
                 className="bg-white rounded-xl border border-luxe-200 p-4 hover:shadow-lg transition-shadow cursor-pointer"
-                whileHover={{ scale: 1.02 }}
                 onClick={() => {
                   setSelectedDoctor({
                     ...clinic,
@@ -959,7 +912,7 @@ const SkinAnalysisApp = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 
@@ -1036,17 +989,15 @@ const SkinAnalysisApp = () => {
           <div className="mt-8 p-6 bg-white rounded-xl text-center border border-luxe-200">
             <h3 className="text-xl font-semibold mb-2">Want More Personalized Recommendations?</h3>
             <p className="text-sm mb-4 text-luxe-600">Get AI-powered skin analysis for treatments perfectly matched to your needs</p>
-            <motion.button
+            <button
               onClick={() => setCurrentTab('home')}
               className="bg-gradient-to-r from-luxe-500 to-luxe-400 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all"
-              whileHover={{ scale: 1.05, shadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
-              whileTap={{ scale: 0.95 }}
             >
               Start AI Skin Analysis
-            </motion.button>
+            </button>
           </div>
         </div>
-      </motion.div>
+      </div>
     );
   };
 

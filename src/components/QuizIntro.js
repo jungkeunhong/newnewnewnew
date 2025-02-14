@@ -12,7 +12,7 @@ const QuizIntro = ({ onStartQuiz }) => {
       exit={{ opacity: 0 }}
     >
       <ScrollToTop />
-      <div className="flex-1 px-8 py-12 flex flex-col justify-between max-h-[90vh]">
+      <div className="flex-1 pt-28 px-8 flex flex-col justify-between max-h-[90vh]">
         <div className="space-y-6">
           <h1 className="text-3xl font-light text-[#3E2723]">
             Let's find your<br />perfect treatment
@@ -62,7 +62,7 @@ const QuizIntro = ({ onStartQuiz }) => {
 
         <motion.button
           onClick={onStartQuiz}
-          className="w-full bg-[#3E2723] text-white py-4 px-6 rounded-2xl flex items-center justify-between mb-4"
+          className="w-full bg-[#3E2723] text-white py-4 px-6 rounded-2xl flex items-center justify-between mb-8"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >

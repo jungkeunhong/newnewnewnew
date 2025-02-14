@@ -11,7 +11,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
       id: 1,
       name: "Botox",
       description: "Natural wrinkle improvement and prevention",
-      image: "https://images.unsplash.com/photo-1598970605070-a38a6ccd3a2d",
+      image: "https://plus.unsplash.com/premium_photo-1661769358914-1d33c22bd7ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Ym90b3h8ZW58MHx8MHx8fDA%3D",
       rating: 4.9,
       reviews: 528,
       price: "$250~",
@@ -25,7 +25,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
       id: 2,
       name: "Filler",
       description: "Natural volume and contour improvement",
-      image: "https://images.unsplash.com/photo-1600334129128-685c5582fd35",
+      image: "https://plus.unsplash.com/premium_photo-1719617673012-4b121052cc8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGZpbGxlcnxlbnwwfHwwfHx8MA%3D%3D",
       rating: 4.8,
       reviews: 423,
       price: "$350~",
@@ -57,7 +57,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
     
     if (concerns.length > 0) {
       const mainConcerns = concerns.slice(0, 2).join(" and ");
-      summary += ` and are mainly concerned about ${mainConcerns}`;
+      summary += ` and are mainly concerned about ${mainConcerns}. Consider following treatments.`;
     }
     
     return summary;
@@ -117,27 +117,6 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
           </p>
         </motion.section>
 
-        {/* Skin Analysis Report */}
-        <motion.section 
-          className="bg-gradient-to-br from-[#3E2723]/5 to-transparent p-6 rounded-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h2 className="cormorant text-2xl mb-4">Want more custom care?</h2>
-          <p className="text-[#3E2723]/80 leading-relaxed mb-6">
-            {quizResults?.skinType === 'Combination' 
-              ? 'Your combination skin type requires both hydration and oil control. Focus on balancing T-zone oil production while maintaining adequate moisture in dry areas.'
-              : 'Get a expert level skin diagnsosis. You can get personalized report based on deep analysis.'}
-          </p>
-          <button
-            onClick={onStartAnalysis}
-            className="w-full luxury-button flex items-center justify-center space-x-3"
-          >
-            <Camera className="w-5 h-5" />
-            <span>Start AI Skin Analysis</span>
-          </button>
-        </motion.section>
-
         {/* Recommended Treatments */}
         <motion.section
           className="space-y-6"
@@ -145,7 +124,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h2 className="cormorant text-2xl">Popular Treatments Among Similar Skin Types</h2>
+          <h2 className="cormorant text-2xl">Top Treatments for Your Skin Type</h2>
           <div className="grid grid-cols-3 gap-6">
             {treatments.map((treatment, index) => (
               <motion.button
@@ -190,7 +169,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <h2 className="cormorant text-2xl">Want to Learn More About Treatments?</h2>
+          <h2 className="cormorant text-2xl">Learn More About Treatments?</h2>
           <div className="space-y-4">
             {treatments.map((treatment, index) => (
               <div key={index} className="p-4 border border-[#3E2723]/10 rounded-xl">
@@ -206,21 +185,6 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
               </div>
             ))}
           </div>
-        </motion.section>
-
-        {/* Bottom CTA */}
-        <motion.section
-          className="text-center pt-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-        >
-          <button
-            onClick={onStartAnalysis}
-            className="w-full max-w-md luxury-button"
-          >
-            Find Your Perfect Treatment with AI Analysis
-          </button>
         </motion.section>
       </div>
     </div>
