@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ScrollToTop from './ScrollToTop';
+import landingVideo from '../assets/0214.mp4';
 
 const LandingPage = ({ onStartQuiz }) => {
   return (
@@ -11,22 +12,18 @@ const LandingPage = ({ onStartQuiz }) => {
       exit={{ opacity: 0 }}
     >
       <ScrollToTop />
-      <div className="p-6 space-y-2 absolute top-10 left-6 z-10">
-        <h3 className="text-white text-lg tracking-wider">BUILT JUST FOR YOU</h3>
-        <h1 className="text-white text-3xl font-light leading-tight">
-          Truly custom<br />skin treatment
-        </h1>
+      <div className="pt-28 px-12 space-y-4 text-right">
       </div>
 
-      <div className="relative h-[75vh] px-6 py-12 bg-white">
-        <div className="rounded-[3rem] overflow-hidden h-full bg-white shadow-lg">
-          <img
-            src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070"
-            alt="Beautiful woman with perfect skin"
-            className="w-full h-full object-cover rounded-[3rem]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent rounded-[3rem]" />
-        </div>
+      <div className="mt-8 relative h-[70vh]">
+        <video
+          src={landingVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover rounded-[15px]"
+        />
       </div>
 
       <div className="p-6">
