@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Camera, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import DoctorRecommendation from './DoctorRecommendation';
+import ScrollToTop from './ScrollToTop';
 
 const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDoctorClick }) => {
   const [selectedTreatment, setSelectedTreatment] = useState(null);
 
   const treatments = [
     {
-      id: 1,
+      id: 'botox',
       name: "Botox",
       description: "Natural wrinkle improvement and prevention",
       image: "https://plus.unsplash.com/premium_photo-1661769358914-1d33c22bd7ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Ym90b3h8ZW58MHx8MHx8fDA%3D",
@@ -22,7 +23,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
       ]
     },
     {
-      id: 2,
+      id: 'filler',
       name: "Filler",
       description: "Natural volume and contour improvement",
       image: "https://plus.unsplash.com/premium_photo-1719617673012-4b121052cc8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGZpbGxlcnxlbnwwfHwwfHx8MA%3D%3D",
@@ -36,10 +37,10 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
       ]
     },
     {
-      id: 3,
+      id: 'laser',
       name: "Pico Laser",
       description: "Skin tone improvement and spot removal",
-      image: "https://images.unsplash.com/photo-1612532275214-e4ca76d0e4d1",
+      image: "https://media.istockphoto.com/id/1731969249/ko/%EC%82%AC%EC%A7%84/%EB%85%B8%ED%99%94-%EB%B0%A9%EC%A7%80-%ED%81%B4%EB%A6%AC%EB%8B%89%EC%97%90%EC%84%9C-%EC%A3%BC%EB%A6%84%EA%B3%BC-%ED%9D%89%ED%84%B0%EB%A5%BC-%EC%A4%84%EC%9D%B4%EA%B8%B0-%EC%9C%84%ED%95%B4-%EC%84%B1%EC%9D%B8-%EB%82%A8%EC%84%B1%EA%B3%BC-%ED%95%A8%EA%BB%98-%EB%A0%88%EC%9D%B4%EC%A0%80-%ED%91%9C%EB%A9%B4-%EC%B2%98%EB%A6%AC-%EC%96%BC%EA%B5%B4-%EC%8A%A4%ED%82%A8-%EC%BC%80%EC%96%B4-%EC%B9%98%EB%A3%8C-%EA%B8%B0%EC%88%A0%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%ED%94%BC%EB%B6%80-%EC%9D%98%EC%82%AC.webp?a=1&b=1&s=612x612&w=0&k=20&c=019vxc5s4SAycLCyiZC078IFtJvhqseZyHse_A9stbU=",
       rating: 4.7,
       reviews: 389,
       price: "$200~",
@@ -70,6 +71,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
   if (selectedTreatment) {
     return (
       <div className="min-h-screen bg-white">
+        <ScrollToTop />
         <DoctorRecommendation
           treatment={selectedTreatment}
           onBack={() => setSelectedTreatment(null)}
@@ -85,6 +87,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
 
   return (
     <div className="min-h-screen bg-white">
+      <ScrollToTop />
       {/* Top Logo */}
       <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-[#3E2723]/10">
         <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -96,7 +99,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
             <span>Back</span>
           </button>
           <button 
-            onClick={onBack} 
+            onClick={() => onTreatmentClick('main')} 
             className="cormorant text-2xl text-center text-[#3E2723]"
           >
             Asentica
@@ -108,8 +111,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
       <div className="pt-20 pb-10 px-4 max-w-screen-xl mx-auto space-y-12">
         {/* Survey Summary */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          className=""
         >
           <h2 className="cormorant text-2xl mb-4">Your Skin Profile</h2>
           <p className="text-[#3E2723]/80 leading-relaxed text-lg text-left">
@@ -120,9 +122,6 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
         {/* Recommended Treatments */}
         <motion.section
           className="space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
         >
           <h2 className="cormorant text-2xl">Top Treatments for Your Skin Type</h2>
           <div className="grid grid-cols-3 gap-6">
@@ -131,9 +130,6 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
                 key={treatment.id}
                 className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
                 onClick={() => handleTreatmentClick(treatment)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + (index * 0.1) }}
               >
                 <div className="p-4 flex flex-col items-center text-center">
                   <div className="w-full aspect-square mb-4 relative rounded-lg overflow-hidden">
@@ -165,9 +161,6 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
         {/* Treatment Information */}
         <motion.section
           className="space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
         >
           <h2 className="cormorant text-2xl">Learn More About Treatments?</h2>
           <div className="space-y-4">
@@ -176,7 +169,11 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
                 <h3 className="font-medium mb-2">{treatment.name}</h3>
                 <p className="text-sm text-[#3E2723]/80 mb-3">{treatment.description}</p>
                 <button
-                  onClick={() => handleTreatmentClick(treatment)}
+                  onClick={() => {
+                    if (onTreatmentClick) {
+                      onTreatmentClick(treatment.id);
+                    }
+                  }}
                   className="text-sm text-[#3E2723] font-medium flex items-center"
                 >
                   Learn more

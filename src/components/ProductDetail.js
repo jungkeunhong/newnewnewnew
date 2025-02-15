@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Star, ShoppingCart, Heart, Share2, Check } from 'lucide-react';
 
-const ProductDetail = ({ product, onBack, skinMetrics }) => {
+const ProductDetail = ({ product, onBack, skinMetrics, onTreatmentClick }) => {
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -50,6 +50,26 @@ const ProductDetail = ({ product, onBack, skinMetrics }) => {
       animate="animate"
       exit="exit"
     >
+      <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-[#3E2723]/10">
+        <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
+          <motion.button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-luxe-500"
+            whileHover={{ x: -5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span>Back</span>
+          </motion.button>
+          <button 
+            onClick={() => onTreatmentClick('main')} 
+            className="cormorant text-2xl text-center text-[#3E2723]"
+          >
+            Asentica
+          </button>
+          <div className="w-10" />
+        </div>
+      </div>
       <div className="p-4 space-y-6">
         <motion.button
           onClick={onBack}

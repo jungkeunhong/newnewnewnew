@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Star, MapPin } from 'lucide-react';
 
-const TreatmentDetail = ({ treatment, onBack, onDoctorClick }) => {
+const TreatmentDetail = ({ treatment, onBack, onDoctorClick, onTreatmentClick }) => {
   const doctors = [
     {
       id: 1,
@@ -83,7 +83,7 @@ const TreatmentDetail = ({ treatment, onBack, onDoctorClick }) => {
     <div className="min-h-screen bg-white">
       {/* Top Navigation */}
       <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-[#3E2723]/10">
-        <div className="max-w-screen-xl mx-auto px-4 py-4">
+        <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
           <button
             onClick={onBack}
             className="flex items-center text-[#3E2723]"
@@ -91,6 +91,13 @@ const TreatmentDetail = ({ treatment, onBack, onDoctorClick }) => {
             <ChevronLeft className="w-5 h-5" />
             <span>Back</span>
           </button>
+          <button 
+            onClick={() => onTreatmentClick('main')} 
+            className="cormorant text-2xl text-center text-[#3E2723]"
+          >
+            Asentica
+          </button>
+          <div className="w-10" />
         </div>
       </div>
 

@@ -14,6 +14,10 @@ import LandingPage from './LandingPage';
 import QuizIntro from './QuizIntro';
 import Quiz from './Quiz';
 import MainPage from './MainPage';
+import TreatmentInformation from './TreatmentInformation';
+import BotoxTreatment from './BotoxTreatment';
+import FillerTreatment from './FillerTreatment';
+import LaserTreatment from './LaserTreatment';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -34,7 +38,8 @@ const database = getDatabase(app);
 const libraries = ['places'];
 
 const SkinAnalysisApp = () => {
-  const [step, setStep] = useState('landing'); // Changed initial step to 'landing'
+  const [step, setStep] = useState('landing');
+  const [previousStep, setPreviousStep] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [showMessage, setShowMessage] = useState(true);
@@ -54,6 +59,7 @@ const SkinAnalysisApp = () => {
     const saved = localStorage.getItem('quizAnswers');
     return saved ? JSON.parse(saved) : null;
   });
+  const [selectedTreatment, setSelectedTreatment] = useState(null);
 
   const handleLogout = () => {
     setQuizCompleted(false);
@@ -719,18 +725,6 @@ const SkinAnalysisApp = () => {
   const BottomNav = () => (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-luxe-200 px-6 py-2 z-50">
       <div className="max-w-md mx-auto flex justify-around items-center">
-        <motion.button
-          className={`flex flex-col items-center space-y-1 ${currentTab === 'search' ? 'text-luxe-500' : 'text-luxe-300'}`}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            setCurrentTab('search');
-            setStep('results');
-          }}
-        >
-          <Search size={24} />
-          <span className="text-xs">Search</span>
-        </motion.button>
         {/* My Skin button temporarily disabled
         <motion.button
           className={`flex flex-col items-center space-y-1 ${currentTab === 'home' ? 'text-luxe-500' : 'text-luxe-300'}`}
@@ -1001,7 +995,7 @@ const SkinAnalysisApp = () => {
     );
   };
 
-  const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => (
+  const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage, onTreatmentClick }) => (
     <motion.div 
       className="min-h-screen bg-white p-4"
       initial="initial"
@@ -1834,13 +1828,38 @@ const SkinAnalysisApp = () => {
     setCurrentTab('search');
   };
 
+  const handleTreatmentSelect = (treatmentId) => {
+    setSelectedTreatment(treatmentId);
+  };
+
+  const handleBackFromTreatment = () => {
+    setSelectedTreatment(null);
+    setStep('treatments');
+  };
+
+  // 페이지 이동을 처리하는 함수
+  const navigateTo = (nextStep) => {
+    setPreviousStep(step);
+    setStep(nextStep);
+  };
+
+  // 이전 페이지로 돌아가는 함수
+  const handleBack = () => {
+    if (previousStep) {
+      setStep(previousStep);
+      setPreviousStep(null);
+    } else {
+      setStep('landing');
+    }
+  };
+
   return (
     <div className="relative">
       <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-[#3E2723]/10">
         <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
           {step !== 'landing' && (
             <button
-              onClick={() => setStep('landing')}
+              onClick={handleBack}
               className="flex items-center space-x-2 text-luxe-500"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -1848,12 +1867,12 @@ const SkinAnalysisApp = () => {
             </button>
           )}
           <button 
-            onClick={() => setStep('results')} 
+            onClick={() => navigateTo('results')} 
             className="cormorant text-2xl text-center text-[#3E2723]"
           >
             Asentica
           </button>
-          <div className="w-10" /> {/* Spacer for centering */}
+          <div className="w-10" />
         </div>
       </div>
       <div className="max-w-md mx-auto min-h-screen bg-white">
@@ -1862,13 +1881,38 @@ const SkinAnalysisApp = () => {
             {step === 'landing' && (
               <LandingPage 
                 key="landing"
-                onStartQuiz={() => setStep('quiz-intro')}
+                onStartQuiz={() => navigateTo('quiz-intro')}
+                onLearnMore={() => navigateTo('treatments')}
+              />
+            )}
+            {step === 'treatments' && !selectedTreatment && (
+              <TreatmentInformation
+                key="treatments"
+                onTreatmentSelect={handleTreatmentSelect}
+              />
+            )}
+            {step === 'treatments' && selectedTreatment === 'botox' && (
+              <BotoxTreatment
+                key="botox"
+                onBackToMain={() => navigateTo('main')}
+              />
+            )}
+            {step === 'treatments' && selectedTreatment === 'filler' && (
+              <FillerTreatment
+                key="filler"
+                onBackToMain={() => navigateTo('main')}
+              />
+            )}
+            {step === 'treatments' && selectedTreatment === 'laser' && (
+              <LaserTreatment
+                key="laser"
+                onBackToMain={() => navigateTo('main')}
               />
             )}
             {step === 'quiz-intro' && (
               <QuizIntro
                 key="quiz-intro"
-                onStartQuiz={() => setStep('quiz')}
+                onStartQuiz={() => navigateTo('quiz')}
               />
             )}
             {step === 'quiz' && (
@@ -1877,7 +1921,7 @@ const SkinAnalysisApp = () => {
                 onComplete={(results) => {
                   setQuizAnswers(results);
                   setQuizCompleted(true);
-                  setStep('main');
+                  navigateTo('main');
                 }}
               />
             )}
@@ -1885,11 +1929,15 @@ const SkinAnalysisApp = () => {
               <MainPage 
                 key="main" 
                 quizResults={quizAnswers} 
-                onStartAnalysis={() => setStep('upload')} 
-                onBack={() => setStep('quiz')}
+                onStartAnalysis={() => navigateTo('upload')} 
+                onBack={() => navigateTo('quiz')}
                 onDoctorClick={(doctor) => {
                   setSelectedDoctor(doctor);
-                  setStep('doctor');
+                  navigateTo('doctor');
+                }}
+                onTreatmentClick={(treatmentId) => {
+                  setSelectedTreatment(treatmentId);
+                  navigateTo('treatments');
                 }}
               />
             )}
@@ -1899,24 +1947,27 @@ const SkinAnalysisApp = () => {
             {step === 'detailed' && (
               <DetailedAnalysis 
                 key="detailed"
-                onBack={() => setStep('results')}
+                onBack={() => navigateTo('results')}
                 skinMetrics={skinMetrics}
                 selectedImage={selectedImage}
+                onTreatmentClick={navigateTo}
               />
             )}
             {step === 'doctor' && selectedDoctor && (
               <DoctorProfile
                 key="doctor"
                 doctor={selectedDoctor}
-                onBack={() => setStep('main')}
+                onBack={() => navigateTo('main')}
+                onTreatmentClick={navigateTo}
               />
             )}
             {step === 'product' && selectedProduct && (
               <ProductDetail
                 key="product"
                 product={selectedProduct}
-                onBack={() => setStep('main')}
+                onBack={() => navigateTo('main')}
                 skinMetrics={skinMetrics}
+                onTreatmentClick={navigateTo}
               />
             )}
           </AnimatePresence>

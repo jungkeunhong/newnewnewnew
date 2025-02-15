@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Star, MapPin, Award, BookOpen, Stethoscope, Share2, Heart } from 'lucide-react';
 
-const DoctorProfile = ({ doctor, onBack }) => {
+const DoctorProfile = ({ doctor, onBack, onTreatmentClick }) => {
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -60,7 +60,7 @@ const DoctorProfile = ({ doctor, onBack }) => {
       exit={{ opacity: 0 }}
     >
       <div className="sticky top-0 bg-white border-b border-luxe-200 z-10">
-        <div className="p-4">
+        <div className="p-4 flex justify-between items-center">
           <motion.button
             onClick={onBack}
             className="flex items-center space-x-2 text-luxe-500"
@@ -70,6 +70,13 @@ const DoctorProfile = ({ doctor, onBack }) => {
             <ChevronLeft className="w-5 h-5" />
             <span>Back to Results</span>
           </motion.button>
+          <button 
+            onClick={() => onTreatmentClick('main')} 
+            className="cormorant text-2xl text-center text-[#3E2723]"
+          >
+            Asentica
+          </button>
+          <div className="w-10" />
         </div>
       </div>
 

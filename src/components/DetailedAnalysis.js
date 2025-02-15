@@ -2,7 +2,7 @@ import React from 'react';
 import { ChevronLeft, Activity, Droplets, Sun, Shield, Bug, Dna } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
+const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage, onTreatmentClick }) => {
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -107,15 +107,26 @@ const DetailedAnalysis = ({ onBack, skinMetrics, selectedImage }) => {
       exit="exit"
       variants={fadeIn}
     >
-      <motion.button
-        onClick={onBack}
-        className="flex items-center space-x-2 text-luxe-500 mb-6"
-        whileHover={{ x: -5 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <ChevronLeft className="w-5 h-5" />
-        <span>Back to Results</span>
-      </motion.button>
+      <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-[#3E2723]/10">
+        <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
+          <motion.button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-luxe-500"
+            whileHover={{ x: -5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span>Back to Results</span>
+          </motion.button>
+          <button 
+            onClick={() => onTreatmentClick('main')} 
+            className="cormorant text-2xl text-center text-[#3E2723]"
+          >
+            Asentica
+          </button>
+          <div className="w-10" />
+        </div>
+      </div>
 
       <motion.div 
         className="bg-gradient-to-br from-luxe-50 to-luxe-100 rounded-2xl p-6 shadow-sm border border-luxe-200 mb-6"
