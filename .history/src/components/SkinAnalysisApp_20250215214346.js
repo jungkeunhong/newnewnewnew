@@ -9,6 +9,7 @@ import ProductDetail from './ProductDetail';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import { getDatabase, ref, push, set } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
 import LandingPage from './LandingPage';
 import QuizIntro from './QuizIntro';
 import Quiz from './Quiz';
@@ -18,7 +19,21 @@ import BotoxTreatment from './BotoxTreatment';
 import FillerTreatment from './FillerTreatment';
 import LaserTreatment from './LaserTreatment';
 import Analytics from '../utils/analytics';
-import { app, database } from '../utils/firebase';
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+  databaseURL: "https://asentica-d473b-default-rtdb.firebaseio.com" // Realtime Database URL 추가
+};
+
+// Firebase 초기화
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 // Google Maps libraries를 상수로 선언
 const libraries = ['places'];

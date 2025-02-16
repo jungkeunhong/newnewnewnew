@@ -19,7 +19,7 @@ const LandingPage = ({ onStartQuiz }) => {
         </h2>
       </div>
 
-      <div className="mt-4 h-[70vh] px-6 flex justify-center items-center">
+      <div className="mt-4 relative h-[70vh] px-6 flex justify-center items-center">
         <video
           src={landingVideo}
           autoPlay

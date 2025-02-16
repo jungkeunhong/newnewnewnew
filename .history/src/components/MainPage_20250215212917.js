@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Camera, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import DoctorRecommendation from './DoctorRecommendation';
 import ScrollToTop from './ScrollToTop';
-import { trackPageView, trackUserAction, trackTreatmentView } from '../utils/firebase';
 
 const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDoctorClick }) => {
   const [selectedTreatment, setSelectedTreatment] = useState(null);
@@ -99,15 +98,7 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
     return summary;
   };
 
-  useEffect(() => {
-    trackPageView('main_page');
-  }, []);
-
   const handleTreatmentClick = (treatment) => {
-    trackUserAction('treatment_selected', {
-      treatment_id: treatment.id,
-      treatment_name: treatment.name
-    });
     setSelectedTreatment(treatment);
   };
 
