@@ -18,6 +18,7 @@ import TreatmentInformation from './TreatmentInformation';
 import BotoxTreatment from './BotoxTreatment';
 import FillerTreatment from './FillerTreatment';
 import LaserTreatment from './LaserTreatment';
+import Analytics from '../utils/analytics';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -88,6 +89,11 @@ const SkinAnalysisApp = () => {
     localStorage.setItem('quizAnswers', JSON.stringify(quizAnswers));
   }, [quizCompleted, quizAnswers]);
 
+  useEffect(() => {
+    // 앱 시작시 사용자 세션 시작 이벤트 추적
+    Analytics.track('Session Started');
+  }, []);
+
   const handleImageUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -110,6 +116,7 @@ const SkinAnalysisApp = () => {
       };
       reader.readAsDataURL(file);
     }
+    Analytics.track('Image Uploaded', { method: 'upload' });
   };
 
   const handleCameraCapture = (event) => {
@@ -134,6 +141,7 @@ const SkinAnalysisApp = () => {
       };
       reader.readAsDataURL(file);
     }
+    Analytics.track('Image Uploaded', { method: 'camera' });
   };
 
   const skinMetrics = {
@@ -364,6 +372,7 @@ const SkinAnalysisApp = () => {
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
+    Analytics.track('Report Saved');
   };
 
   const handleDetailedAnalysisClick = () => {
@@ -1826,10 +1835,13 @@ const SkinAnalysisApp = () => {
     setQuizAnswers(results);
     setQuizCompleted(true);
     setCurrentTab('search');
+    Analytics.track('Quiz Completed', { results });
   };
 
   const handleTreatmentSelect = (treatmentId) => {
     setSelectedTreatment(treatmentId);
+    navigateTo('treatments');
+    Analytics.track('Treatment Selected', { treatmentId });
   };
 
   const handleBackFromTreatment = () => {
@@ -1841,6 +1853,7 @@ const SkinAnalysisApp = () => {
   const navigateTo = (nextStep) => {
     setPreviousStep(step);
     setStep(nextStep);
+    Analytics.pageView(nextStep);
   };
 
   // 이전 페이지로 돌아가는 함수
