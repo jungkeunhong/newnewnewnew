@@ -4,7 +4,7 @@ import { Camera, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import DoctorRecommendation from './DoctorRecommendation';
 import ScrollToTop from './ScrollToTop';
 import { trackPageView, trackUserAction, trackTreatmentView } from '../utils/firebase';
-import Analytics from '../utils/analytics';
+import Analytics from '../utils/Analytics';
 
 const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDoctorClick }) => {
   const [selectedTreatment, setSelectedTreatment] = useState(null);
