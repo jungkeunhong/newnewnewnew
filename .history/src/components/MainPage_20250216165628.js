@@ -106,8 +106,8 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
 
   const handleTreatmentClick = (treatment) => {
     // 트리트먼트 카드 클릭 트래킹
-    Analytics.track('treatment_card_click', {
-      section: 'recommended_treatments',
+    Analytics.track('Treatment Card Clicked', {
+      section: 'Recommended Treatments',
       treatment_id: treatment.id,
       treatment_name: treatment.name,
       treatment_price: treatment.price,
@@ -124,8 +124,8 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
 
   // Learn More 섹션의 트리트먼트 클릭 핸들러
   const handleLearnMoreClick = (treatment) => {
-    Analytics.track('learn_more_treatment_click', {
-      section: 'learn_more',
+    Analytics.track('Learn More Treatment Clicked', {
+      section: 'Learn More',
       treatment_id: treatment.id,
       treatment_name: treatment.name,
       treatment_description: treatment.description
@@ -138,13 +138,13 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
 
   // 의사 프로필 클릭 핸들러
   const handleDoctorClick = (doctor) => {
-    Analytics.track('doctor_profile_click', {
+    Analytics.track('Doctor Profile Clicked', {
       doctor_id: doctor.id,
       doctor_name: doctor.name,
       doctor_specialty: doctor.specialty,
       doctor_rating: doctor.rating,
       doctor_reviews: doctor.reviews,
-      treatment_context: selectedTreatment ? selectedTreatment.name : 'general'
+      treatment_context: selectedTreatment ? selectedTreatment.name : 'General'
     });
 
     if (onDoctorClick) {
