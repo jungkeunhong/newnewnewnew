@@ -3,45 +3,45 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, Star, Clock, AlertCircle } from 'lucide-react';
 import ScrollToTop from './ScrollToTop';
 
-const LaserTreatment = ({ onBackToMain }) => {
+const MicroneedlingTreatment = ({ onBackToMain }) => {
   const benefits = [
     {
-      title: "Skin Rejuvenation",
-      description: "Improves skin texture, tone, and reduces signs of aging",
+      title: "Collagen Boost",
+      description: "Stimulates natural collagen production for firmer, smoother skin.",
+      icon: "💉"
+    },
+    {
+      title: "Scar & Wrinkle Reduction",
+      description: "Reduces acne scars, fine lines, and wrinkles with precision.",
       icon: "✨"
     },
     {
-      title: "Targeted Treatment",
-      description: "Precisely targets specific skin concerns without affecting surrounding tissue",
-      icon: "🎯"
-    },
-    {
-      title: "Progressive Results",
-      description: "Continues to improve skin over time as collagen production increases",
-      icon: "📈"
+      title: "Improved Skin Texture",
+      description: "Evens skin texture and minimizes pore appearance.",
+      icon: "🌿"
     }
   ];
 
   const keyAreas = [
     {
       area: "Face",
-      image: "https://www.artemedica.com/wp-content/uploads/2020/05/artemedicamay2020-1.jpg"
+      image: ""
     },
     {
       area: "Neck",
       image: "https://indylasercenter.com/wp-content/uploads/2019/08/All-You-Need-to-Know-about-Laser-Hair-Removal-on-the-Neck-How-Many-Treatments-are-Necessary-for-Complete-Laser-Hair-Removal-from-the-Neck.jpg"
     },
     {
-      area: "Chest",
-      image: "https://myethosspa.com/wp-content/uploads/2024/04/laser-hair-removal-for-chest-1.webp"
+      area: "Scars",
+      image: "https://plus.unsplash.com/premium_photo-1706429674321-a6029431c0bc?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ];
 
   const precautions = [
-    "People with certain skin conditions",
-    "Those with recent sun exposure",
-    "Individuals using certain medications",
-    "People with a history of keloid scarring"
+    "Active acne or skin infection",
+    "Recent sun exposure",
+    "Pregnant or breastfeeding",
+    "History of keloid scarring"
   ];
 
   return (
@@ -74,14 +74,13 @@ const LaserTreatment = ({ onBackToMain }) => {
       <ScrollToTop />
       <div className="pt-20 p-6 space-y-8">
         {/* Treatment Title */}
-        <h1 className="text-3xl font-bold text-luxe-900 mb-8">Pico Laser</h1>
+        <h1 className="text-3xl font-bold text-luxe-900 mb-8">Microneedling</h1>
         
         {/* TLDR Section */}
         <div className="">
           <h2 className="text-xl font-bold text-luxe-900 mb-4">TLDR;</h2>
           <p className="text-luxe-600">
-            Laser treatments use focused light energy to improve skin texture, reduce pigmentation, 
-            and stimulate collagen production. Results develop over time with minimal downtime.
+            Microneedling uses tiny needles to stimulate collagen, improving texture, reducing scars, and enhancing skin elasticity with minimal downtime.
           </p>
         </div>
 
@@ -147,11 +146,11 @@ const LaserTreatment = ({ onBackToMain }) => {
         <div className="space-y-4">
           <div className="flex items-center space-x-2 text-luxe-600">
             <Clock className="w-5 h-5" />
-            <span>Treatment time: 15-45 minutes</span>
+            <span>Treatment time: 30-60 minutes</span>
           </div>
           <div className="flex items-center space-x-2 text-luxe-600">
             <Star className="w-5 h-5" />
-            <span>Results: Gradual improvement over 4-6 weeks</span>
+            <span>Results: Visible within 3-4 weeks</span>
           </div>
         </div>
       </div>
@@ -159,4 +158,4 @@ const LaserTreatment = ({ onBackToMain }) => {
   );
 };
 
-export default LaserTreatment; 
+export default MicroneedlingTreatment;
