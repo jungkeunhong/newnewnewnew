@@ -50,7 +50,7 @@ const QuizIntro = ({ onStartQuiz }) => {
               key={index}
               className="bg-white p-4 md:p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
             >
-              <div className="flex flex-col items-center text-center space-y-2 md:space-y-3">
+              <div className="flex flex-col items-center text-center space-y-1 md:space-y-3">
                 <item.icon className="w-6 h-6 md:w-7 md:h-7 text-[#3E2723]/80" />
                 <div>
                   <div className="text-sm md:text-base font-medium text-[#3E2723]">{item.title}</div>

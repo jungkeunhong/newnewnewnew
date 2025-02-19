@@ -13,7 +13,7 @@ const QuizIntro = ({ onStartQuiz }) => {
     >
       <ScrollToTop />
       <div className="flex-1 max-w-4xl mx-auto px-6 pt-20 pb-12 flex flex-col justify-between">
-        <div className="space-y-3 text-center">
+        <div className="space-y-6 text-center">
           <h1 className="cormorant text-4xl md:text-4xl font-light text-[#3E2723] leading-tight">
             Discover Your Perfect<br />Skin Treatment
           </h1>

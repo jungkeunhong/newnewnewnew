@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, Star, ChevronRight, ChevronLeft, ChevronDown } from 'lucide-react';
+import { Camera, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import DoctorRecommendation from './DoctorRecommendation';
 import ScrollToTop from './ScrollToTop';
 import { trackPageView, trackUserAction, trackTreatmentView } from '../utils/firebase';
@@ -288,20 +288,6 @@ const MainPage = ({ quizResults, onStartAnalysis, onTreatmentClick, onBack, onDo
                 </div>
               </div>
             </div>
-
-            <motion.div
-              className="flex justify-center mt-4"
-              animate={{
-                y: [0, 10, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <ChevronDown className="w-6 h-6 text-[#3E2723]/60" />
-            </motion.div>
           </div>
         </motion.section>
 

@@ -79,7 +79,7 @@ const LandingPage = ({ onStartQuiz }) => {
         </motion.div>
 
         {/* Description Section */}
-        <div className="bg-white  flex flex-col justify-center px-6 py-12">
+        <div className="bg-white min-h-screen flex flex-col justify-center px-6 py-12">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-light text-[#1A1A1A] mb-8 leading-relaxed">
               The easiest way to find<br />your perfect clinic

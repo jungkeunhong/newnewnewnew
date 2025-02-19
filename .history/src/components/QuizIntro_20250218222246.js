@@ -13,7 +13,7 @@ const QuizIntro = ({ onStartQuiz }) => {
     >
       <ScrollToTop />
       <div className="flex-1 max-w-4xl mx-auto px-6 pt-20 pb-12 flex flex-col justify-between">
-        <div className="space-y-3 text-center">
+        <div className="space-y-6 text-center">
           <h1 className="cormorant text-4xl md:text-4xl font-light text-[#3E2723] leading-tight">
             Discover Your Perfect<br />Skin Treatment
           </h1>
@@ -63,7 +63,7 @@ const QuizIntro = ({ onStartQuiz }) => {
 
         <motion.button
           onClick={onStartQuiz}
-          className="w-full max-w-md mx-auto bg-[#3E2723] text-white py-4 px-6 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300 mt-6"
+          className="w-full max-w-md mx-auto bg-[#3E2723] text-white py-2 px-6 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300 mt-6"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
